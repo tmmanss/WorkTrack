@@ -1,0 +1,65 @@
+@startuml
+skinparam dpi 150
+title WorkTrack - Component Diagram (draft)
+skinparam componentStyle rectangle
+
+package "Employee mobile app\n(Flutter / Dart)" as MOB {
+  [Screens\n(login, home, history, requests)] as M_UI
+  [Location service\n(position + accuracy)] as M_LOC
+  [API client\n(HTTPS, token storage)] as M_API
+}
+
+package "Administrator web panel\n(React / TypeScript)" as WEB {
+  [Pages and forms\n(employees, workplaces, schedules,\nattendance, requests, reports)] as W_UI
+  [API client\n(HTTPS, token storage)] as W_API
+}
+
+package "Backend\n(Java Spring Boot, single application)" as BE {
+  [REST controllers\n(OpenAPI documentation)] as CTRL
+  [Security\n(Spring Security, JWT, roles)] as SEC
+  [Auth and user service] as SVC_USER
+  [Workplace and schedule service] as SVC_WP
+  [Attendance service\n(geofence validation, work sessions,\nduplicate protection)] as SVC_ATT
+  [Time calculation service\n(worked time, lateness, overtime)] as SVC_CALC
+  [Presence check scheduler\n(random intervals)] as SVC_PRES
+  [Request service] as SVC_REQ
+  [Report and statistics service] as SVC_REP
+  [Notification service] as SVC_NOT
+  [Repositories\n(Spring Data JPA)] as REPO
+}
+
+database "PostgreSQL\n(users, organizations, workplaces, schedules,\nwork sessions, presence checks, requests)" as DB
+cloud "Firebase Cloud Messaging\n(optional)" as FCM
+
+M_UI --> M_LOC
+M_UI --> M_API
+W_UI --> W_API
+
+M_API --> CTRL : REST / JSON / HTTPS
+W_API --> CTRL : REST / JSON / HTTPS
+
+CTRL --> SEC : authenticate,\ncheck role
+CTRL --> SVC_USER
+CTRL --> SVC_WP
+CTRL --> SVC_ATT
+CTRL --> SVC_REQ
+CTRL --> SVC_REP
+
+SVC_ATT --> SVC_CALC
+SVC_ATT --> SVC_WP : workplace and\nschedule rules
+SVC_PRES --> SVC_ATT : open sessions,\nstore check results
+SVC_PRES --> SVC_NOT
+SVC_REQ --> SVC_NOT
+SVC_REP --> SVC_CALC
+
+SVC_USER --> REPO
+SVC_WP --> REPO
+SVC_ATT --> REPO
+SVC_CALC --> REPO
+SVC_REQ --> REPO
+SVC_REP --> REPO
+REPO --> DB : JDBC
+
+SVC_NOT --> FCM : send push
+FCM ..> M_API : push (presence check,\nnotification)
+@enduml
