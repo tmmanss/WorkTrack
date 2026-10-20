@@ -15,9 +15,9 @@ Diagrams (editable sources in `diagrams/`, exports in `diagrams/exports/`):
 
 | Diagram | Source | Export |
 |---|---|---|
-| System Context | [01-system-context.puml](../diagrams/01-system-context.puml) | ![](../diagrams/exports/01-system-context.png) |
-| Use Cases | [02-use-cases.puml](../diagrams/02-use-cases.puml) | ![](../diagrams/exports/02-use-cases.png) |
-| Components (draft) | [03-components.puml](../diagrams/03-components.puml) | ![](../diagrams/exports/03-components.png) |
+| System Context | [01-system-context.puml](/diagrams/01-system-context.puml) | ![](/diagrams/exports/01-system-context.png) |
+| Use Cases | [02-use-cases.puml](/diagrams/02-use-cases.puml) | ![](/diagrams/exports/02-use-cases.png) |
+| Components (draft) | [03-components.puml](/diagrams/03-components.puml) | ![](/diagrams/exports/03-components.png) |
 
 ## 2. Key architectural principles
 
