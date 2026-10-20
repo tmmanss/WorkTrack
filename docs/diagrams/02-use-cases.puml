@@ -1,0 +1,80 @@
+@startuml
+skinparam dpi 150
+title WorkTrack - Use Case Diagram
+left to right direction
+
+skinparam usecase {
+  BackgroundColor<<Must>> #C8E6C9
+  BackgroundColor<<Should>> #FFF9C4
+  BackgroundColor<<Could>> #E0E0E0
+}
+
+actor "Employee" as E
+actor "Administrator" as A
+actor "Scheduler\n(System)" as S
+
+rectangle "WorkTrack" {
+
+  ' --- Employee ---
+  usecase "UC-01 Log in\n(FR-01, FR-02)" as UC01 <<Must>>
+  usecase "UC-02 View profile\n(FR-05)" as UC02 <<Should>>
+  usecase "UC-03 View schedule\n(FR-11)" as UC03 <<Must>>
+  usecase "UC-04 Check in\n(FR-12, FR-16 to FR-19)" as UC04 <<Must>>
+  usecase "UC-05 Check out\n(FR-13, FR-16 to FR-19)" as UC05 <<Must>>
+  usecase "UC-06 View attendance history\n(FR-26)" as UC06 <<Must>>
+  usecase "UC-07 Submit request\n(FR-30)" as UC07 <<Should>>
+  usecase "UC-08 Respond to presence check\n(FR-33, FR-35)" as UC08 <<Should>>
+  usecase "UC-09 Remote work session\nand Work Check (FR-38)" as UC09 <<Could>>
+
+  ' --- Included behaviour ---
+  usecase "Validate location\n(geofence + GPS accuracy)\n(FR-14, FR-15)" as UCV <<Must>>
+  usecase "Calculate working time\n(FR-22 to FR-24)" as UCC <<Must>>
+
+  ' --- Administrator ---
+  usecase "UC-10 Manage organization\nand rules (FR-03, FR-25)" as UC10 <<Must>>
+  usecase "UC-11 Manage employees\n(FR-04)" as UC11 <<Must>>
+  usecase "UC-12 Manage workplaces\nand geofences (FR-06 to FR-08)" as UC12 <<Must>>
+  usecase "UC-13 Manage schedules\n(FR-09, FR-10)" as UC13 <<Must>>
+  usecase "UC-14 View attendance\nof employees (FR-27)" as UC14 <<Must>>
+  usecase "UC-15 Review NEEDS_REVIEW marks\n(FR-20)" as UC15 <<Should>>
+  usecase "UC-16 Process requests\n(FR-31, FR-32)" as UC16 <<Should>>
+  usecase "UC-17 View statistics\nand reports (FR-28, FR-29)" as UC17 <<Must>>
+  usecase "UC-18 Review possible absences\nand unclosed sessions\n(FR-21, FR-36, FR-37)" as UC18 <<Should>>
+
+  ' --- System ---
+  usecase "UC-19 Run periodic\npresence checks\n(FR-33 to FR-36)" as UC19 <<Should>>
+}
+
+E --> UC01
+E --> UC02
+E --> UC03
+E --> UC04
+E --> UC05
+E --> UC06
+E --> UC07
+E --> UC08
+E --> UC09
+
+A --> UC01
+A --> UC10
+A --> UC11
+A --> UC12
+A --> UC13
+A --> UC14
+A --> UC15
+A --> UC16
+A --> UC17
+A --> UC18
+
+S --> UC19
+
+UC04 ..> UCV : <<include>>
+UC05 ..> UCV : <<include>>
+UC05 ..> UCC : <<include>>
+UC19 ..> UC08 : <<triggers>>
+
+legend right
+  Green: Must   Yellow: Should   Grey: Could
+  (priorities from 06-requirements.md)
+endlegend
+@enduml

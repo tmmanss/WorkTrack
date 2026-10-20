@@ -1,0 +1,25 @@
+@startuml
+skinparam dpi 150
+title WorkTrack - System Context
+
+actor "Employee" as E
+actor "Administrator /\nEmployer" as A
+
+rectangle "WorkTrack\nAttendance and working time tracking system\n(mobile app, web panel, backend, database)" as WT #C5E1F5
+
+cloud "Device location services\n(GPS / network location, Android)" as LOC
+cloud "Push notification service\n(Firebase Cloud Messaging, optional)" as PUSH
+cloud "Map tile provider\n(web panel: choose workplace coordinates)" as MAP
+
+E --> WT : check-in / check-out,\nschedule, history, requests\n(mobile app)
+A --> WT : employees, workplaces, schedules,\nreview, reports\n(web panel)
+LOC --> WT : device location + accuracy\n(read by the mobile app)
+WT --> PUSH : notification and\npresence check requests
+PUSH ..> E : push messages
+WT --> MAP : map tile requests\n(web panel)
+
+legend right
+  Solid arrows: data flows initiated by the shown side.
+  Optional external services are marked in the text.
+endlegend
+@enduml
