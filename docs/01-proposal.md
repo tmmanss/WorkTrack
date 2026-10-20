@@ -70,10 +70,9 @@ To design, implement and evaluate a prototype of a client-server information sys
 - Statuses: accepted, rejected, needs review (for uncertain GPS).
 - Work sessions and calculation of worked hours, lateness, early leaving, overtime.
 - Attendance history and basic statistics; admin web panel.
-- Absence and schedule-change requests (basic).
 
 ### Optional (Should / Could, after the MVP)
-
+- Absence and schedule-change requests (basic).
 - Periodic presence verification (random-interval checks between check-in and check-out).
 - Remote work mode with Work Check confirmations.
 - QR code confirmation, biometric confirmation (Face ID), mock-location detection.
