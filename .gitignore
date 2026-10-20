@@ -1,0 +1,39 @@
+# Secrets and personal data
+.env
+*.env
+!*.env.example
+*.pem
+*.key
+secrets/
+application-local.properties
+application-local.yml
+
+# Java / Spring Boot
+target/
+build/
+.gradle/
+*.class
+*.jar
+*.log
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+src/mobile/build/
+local.properties
+
+# Node / React
+node_modules/
+src/web/dist/
+src/web/build/
+npm-debug.log*
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
