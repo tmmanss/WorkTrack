@@ -5,7 +5,7 @@
 - **Priority (MoSCoW):** Must = required for the MVP; Should = important, implemented after the MVP core;
   Could = optional, implemented only if time allows. Won't = out of scope (see section 5).
 - **Evidence:** all requirements are currently marked **Assumption** (derived from the author's domain
-  analysis and comparison of existing systems). After user discussions (DIP-2) the column is updated to
+  analysis and comparison of existing systems). After user discussions (WT-2) the column is updated to
   **Verified (Interview N)** or the requirement is changed or removed.
 - **Acceptance criterion:** a condition that can be checked by a test or a demonstration.
   Test mapping is defined in `09-verification-plan.md`.
@@ -143,7 +143,7 @@ production deployment, guaranteed protection from GPS spoofing.
 
 | Area | Requirements | Related tasks |
 |---|---|---|
-| Use cases and diagrams | FR-01 to FR-32 | DIP-7 |
-| Prototype screens | FR-06, FR-11, FR-12, FR-13, FR-26, FR-27, FR-30, FR-31 | DIP-8 |
-| Tests and metrics | All Must; FR-14, FR-15, FR-22, FR-36, NFR-06, NFR-09 | DIP-9 |
-| Evidence from users | All (status to be updated) | DIP-2 |
+| Use cases and diagrams | FR-01 to FR-32 | WT-7 |
+| Prototype screens | FR-06, FR-11, FR-12, FR-13, FR-26, FR-27, FR-30, FR-31 | WT-8 |
+| Tests and metrics | All Must; FR-14, FR-15, FR-22, FR-36, NFR-06, NFR-09 | WT-9 |
+| Evidence from users | All (status to be updated) | WT-2 |
