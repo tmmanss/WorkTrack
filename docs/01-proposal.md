@@ -24,7 +24,7 @@ Organizations need reliable records of when employees start and finish work and 
 2. **The interval between check-in and check-out is not verified.** An employee can check in, leave for several hours and return before check-out; the system then counts the whole interval as working time.
 3. **Calculation rules are manual.** Lateness, early leaving, overtime and approved absences are often calculated by hand, which is slow and error-prone.
 
-Commercial products (Jibble, Connecteam, TimeCamp, Buddy Punch) cover parts of this problem, but they are closed, subscription-based and not designed to be studied or adapted. The project designs, implements and evaluates its own prototype, with particular attention to GPS inaccuracy and to presence verification between check-in and check-out.
+Commercial products (Jibble, Connecteam, TimeCamp, Buddy Punch) cover the basic attendance functions, but they are proprietary cloud services; self-hosting is offered only on a top-tier plan (TimeCamp), and their logic cannot be studied or adapted. See [04-systems-comparison.md](04-systems-comparison.md).
 
 > **Status of evidence:** points 1-3 are currently based on the author's analysis of the domain and existing systems (**assumption**). They will be verified through user discussions in WT-2 and the status will be updated here.
 
