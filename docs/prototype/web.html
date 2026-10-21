@@ -1,0 +1,1864 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WorkTrack – Administrator panel prototype</title>
+    <style>
+      :root {
+        --p: #2457d6;
+        --pc: #e3ebff;
+        --bg: #f6f8fc;
+        --s: #fff;
+        --t: #1b2430;
+        --m: #5b6676;
+        --b: #e3e8f0;
+        --ok: #16a34a;
+        --okb: #e7f6ec;
+        --wn: #b45309;
+        --wnb: #fef3c7;
+        --er: #dc2626;
+        --erb: #fdecec;
+        --nn: #64748b;
+        --nnb: #eef1f5;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font:
+          14px/1.45 Inter,
+          Roboto,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        color: var(--t);
+        background: var(--bg);
+        font-variant-numeric: tabular-nums;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          transform 0.1s;
+      }
+      :focus-visible {
+        outline: 3px solid var(--p);
+        outline-offset: 2px;
+      }
+      #shell {
+        display: flex;
+        height: 100vh;
+        min-width: 1100px;
+      }
+      aside {
+        width: 240px;
+        flex: none;
+        background: var(--s);
+        border-right: 1px solid var(--b);
+        display: flex;
+        flex-direction: column;
+        padding: 16px 12px;
+        gap: 4px;
+      }
+      .brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 4px 8px;
+      }
+      .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--p);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        flex: none;
+      }
+      .org {
+        padding: 8px;
+        margin-bottom: 12px;
+        font-size: 12px;
+        color: var(--m);
+        border-bottom: 1px solid var(--b);
+      }
+      aside nav button {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        height: 44px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 12px;
+        background: none;
+        font-weight: 500;
+        color: var(--m);
+        text-align: left;
+      }
+      aside nav button:hover {
+        background: var(--nnb);
+      }
+      aside nav button.on {
+        background: var(--pc);
+        color: var(--p);
+        font-weight: 700;
+      }
+      .badge {
+        margin-left: auto;
+        background: var(--er);
+        color: #fff;
+        border-radius: 999px;
+        font-size: 11px;
+        min-width: 20px;
+        height: 20px;
+        display: grid;
+        place-items: center;
+        padding: 0 6px;
+        font-weight: 700;
+      }
+      .col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .top {
+        height: 64px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 0 24px;
+        background: var(--s);
+        border-bottom: 1px solid var(--b);
+      }
+      .top .ti {
+        flex: 1;
+      }
+      .top h1 {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .tag {
+        font-size: 11px;
+        color: var(--m);
+      }
+      .sr {
+        position: relative;
+        width: 260px;
+      }
+      .sr input {
+        width: 100%;
+        padding-left: 36px;
+      }
+      .sr svg {
+        position: absolute;
+        left: 10px;
+        top: 11px;
+        color: var(--m);
+      }
+      .ibtn {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 0;
+        background: none;
+        display: grid;
+        place-items: center;
+      }
+      .ibtn:hover {
+        background: var(--nnb);
+      }
+      .ibtn i {
+        position: absolute;
+        top: 4px;
+        right: 2px;
+        font-style: normal;
+        background: var(--er);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 99px;
+        min-width: 16px;
+        height: 16px;
+        display: grid;
+        place-items: center;
+      }
+      .am {
+        position: relative;
+      }
+      .av {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--p);
+        color: #fff;
+        border: 0;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .menu {
+        position: absolute;
+        right: 0;
+        top: 44px;
+        width: 200px;
+        background: var(--s);
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        padding: 8px;
+        z-index: 30;
+      }
+      .menu button {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+        height: 40px;
+        align-items: center;
+        border: 0;
+        background: none;
+        border-radius: 8px;
+        padding: 0 8px;
+      }
+      .menu button:hover {
+        background: var(--nnb);
+      }
+      #main {
+        flex: 1;
+        overflow: auto;
+        padding: 24px;
+      }
+      .c {
+        background: var(--s);
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .grid4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .grid6 {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .kpi {
+        text-align: left;
+        background: var(--s);
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .kpi:hover {
+        border-color: var(--p);
+        background: #fafcff;
+      }
+      .kpi b {
+        display: block;
+        font-size: 30px;
+        line-height: 1.2;
+        margin: 4px 0 2px;
+      }
+      .m {
+        color: var(--m);
+      }
+      .sm {
+        font-size: 12px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .ok {
+        color: var(--ok);
+        background: var(--okb);
+      }
+      .wn {
+        color: var(--wn);
+        background: var(--wnb);
+      }
+      .er {
+        color: var(--er);
+        background: var(--erb);
+      }
+      .nn {
+        color: var(--nn);
+        background: var(--nnb);
+      }
+      .in {
+        color: var(--p);
+        background: var(--pc);
+      }
+      .b {
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid var(--b);
+        background: var(--s);
+        font-weight: 600;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .b:hover {
+        background: var(--nnb);
+      }
+      .b:active {
+        transform: scale(0.97);
+      }
+      .b.p {
+        background: var(--p);
+        color: #fff;
+        border-color: var(--p);
+      }
+      .b.p:hover {
+        background: #1d49b8;
+      }
+      .b.ok {
+        color: var(--ok);
+        border-color: #bfe6cc;
+        background: var(--s);
+      }
+      .b.ok:hover {
+        background: var(--okb);
+      }
+      .b.er {
+        color: var(--er);
+        border-color: #f5c2c2;
+        background: var(--s);
+      }
+      .b.er:hover {
+        background: var(--erb);
+      }
+      .b.s {
+        min-height: 32px;
+        padding: 0 12px;
+      }
+      input,
+      select,
+      textarea {
+        height: 40px;
+        border: 1px solid var(--b);
+        border-radius: 8px;
+        padding: 0 12px;
+        font: inherit;
+        background: #fff;
+        color: var(--t);
+      }
+      textarea {
+        height: 80px;
+        padding: 10px 12px;
+        resize: none;
+        width: 100%;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--p);
+      }
+      label.f {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--m);
+        margin-bottom: 12px;
+      }
+      label.f input,
+      label.f select {
+        display: block;
+        width: 100%;
+        margin-top: 4px;
+      }
+      .err {
+        color: var(--er);
+        font-size: 12px;
+        margin-top: 4px;
+        font-weight: 500;
+      }
+      .tg {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 44px;
+        height: 24px;
+        padding: 0;
+        border: 0;
+        border-radius: 99px;
+        background: #cbd3df;
+        position: relative;
+        cursor: pointer;
+        flex: none;
+        transition: background 0.2s;
+      }
+      .tg::after {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        transition: left 0.2s;
+      }
+      .tg:checked {
+        background: var(--p);
+      }
+      .tg:checked::after {
+        left: 22px;
+      }
+      .tg:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .fl {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .sp {
+        flex: 1;
+      }
+      .tw {
+        background: var(--s);
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        overflow: auto;
+        max-height: calc(100vh - 290px);
+      }
+      .tw.h {
+        max-height: 420px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        position: sticky;
+        top: 0;
+        background: #fafbfd;
+        text-align: left;
+        font-size: 12px;
+        color: var(--m);
+        font-weight: 600;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--b);
+        white-space: nowrap;
+        z-index: 1;
+      }
+      td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--b);
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      tr.k:hover td {
+        background: #f9fbff;
+        cursor: pointer;
+      }
+      .em {
+        text-align: center;
+        color: var(--m);
+        padding: 32px;
+      }
+      .bar {
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .bar label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--m);
+      }
+      .bar select,
+      .bar input {
+        display: block;
+        margin-top: 4px;
+      }
+      .it {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--b);
+      }
+      .it:last-child {
+        border: 0;
+      }
+      .it .ty {
+        width: 130px;
+        flex: none;
+      }
+      .it .tx {
+        flex: 1;
+        min-width: 0;
+      }
+      .it .tx b {
+        display: block;
+      }
+      .ls {
+        max-height: 330px;
+        overflow: auto;
+      }
+      .tabs {
+        display: inline-flex;
+        background: var(--nnb);
+        border-radius: 999px;
+        padding: 3px;
+        margin-bottom: 16px;
+      }
+      .tabs button {
+        border: 0;
+        background: none;
+        height: 34px;
+        padding: 0 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        color: var(--m);
+      }
+      .tabs button.on {
+        background: var(--s);
+        color: var(--p);
+        box-shadow: 0 1px 2px rgba(27, 36, 48, 0.12);
+      }
+      .scr {
+        position: fixed;
+        inset: 0;
+        background: rgba(27, 36, 48, 0.35);
+        z-index: 40;
+        animation: fd 0.2s;
+      }
+      @keyframes fd {
+        from {
+          opacity: 0;
+        }
+      }
+      @keyframes sl {
+        from {
+          transform: translateX(40px);
+          opacity: 0;
+        }
+      }
+      .dr {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 480px;
+        max-width: 100%;
+        background: var(--s);
+        z-index: 41;
+        display: flex;
+        flex-direction: column;
+        animation: sl 0.2s;
+        border-left: 1px solid var(--b);
+      }
+      .dr header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--b);
+      }
+      .dr .bd {
+        flex: 1;
+        overflow: auto;
+        padding: 20px;
+      }
+      .dr footer {
+        padding: 16px 20px;
+        border-top: 1px solid var(--b);
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .mk {
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 8px;
+      }
+      .mk dl {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 2px 8px;
+        margin: 8px 0 0;
+        font-size: 13px;
+      }
+      .mk dt {
+        color: var(--m);
+      }
+      .mk dd {
+        margin: 0;
+      }
+      .tl {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .tl li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0 6px 12px;
+        border-left: 2px solid var(--b);
+        margin-left: 6px;
+        position: relative;
+      }
+      .tl li::before {
+        content: "";
+        position: absolute;
+        left: -6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--nn);
+      }
+      .tl li.ok::before {
+        background: var(--ok);
+      }
+      .tl li.er::before {
+        background: var(--er);
+      }
+      .tl li.nn::before {
+        background: var(--nn);
+      }
+      .h3 {
+        font-size: 14px;
+        font-weight: 700;
+        margin: 20px 0 8px;
+      }
+      .pop {
+        position: fixed;
+        z-index: 52;
+        width: 280px;
+        background: var(--s);
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 8px 24px rgba(27, 36, 48, 0.15);
+      }
+      .mdl {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background: var(--s);
+        border-radius: 12px;
+        padding: 24px;
+        z-index: 51;
+        border: 1px solid var(--b);
+      }
+      #toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translate(-50%, 20px);
+        background: #1b2430;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 999px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.2s;
+        z-index: 60;
+      }
+      #toast.on {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      .two {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .two3 {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 16px;
+      }
+      .li {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 12px;
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        background: var(--s);
+        margin-bottom: 8px;
+      }
+      .li:hover {
+        border-color: var(--p);
+      }
+      .li.on {
+        border-color: var(--p);
+        background: var(--pc);
+      }
+      .dy {
+        width: 48px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--b);
+        background: var(--s);
+        font-weight: 600;
+      }
+      .dy[aria-pressed="true"] {
+        background: var(--p);
+        color: #fff;
+        border-color: var(--p);
+      }
+      .map {
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f1f5fb;
+      }
+      .pbar {
+        display: flex;
+        height: 12px;
+        border-radius: 99px;
+        overflow: hidden;
+        background: var(--nnb);
+        margin: 8px 0 16px;
+      }
+      .lg {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+      .lg .c {
+        width: 380px;
+        padding: 32px;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 24px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--b);
+      }
+      .row:last-child {
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="toast" role="status"></div>
+    <script>
+      const I = {
+        grid: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+        clock: "M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2",
+        users:
+          "M9 11a3 3 0 100-6 3 3 0 000 6zM3 20a6 6 0 0112 0M17 11a3 3 0 100-6M21 20a6 6 0 00-4-5.6",
+        pin: "M12 21s7-6 7-12a7 7 0 10-14 0c0 6 7 12 7 12zM12 11a2 2 0 100-4 2 2 0 000 4z",
+        cal: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
+        inbox: "M4 13l2-8h12l2 8v6H4zM4 13h5l1 2h4l1-2h5",
+        bars: "M5 20V10M12 20V4M19 20v-7",
+        gear: "M12 15a3 3 0 100-6 3 3 0 000 6zM19 12l2-1-2-4-2 1a7 7 0 00-2-1l-.5-2h-4l-.5 2a7 7 0 00-2 1L7 7l-2 4 2 1v2l-2 1 2 4 2-1a7 7 0 002 1l.5 2h4l.5-2a7 7 0 002-1l2 1 2-4-2-1z",
+        bell: "M6 16v-5a6 6 0 0112 0v5l2 2H4zM10 21h4",
+        search: "M11 18a7 7 0 100-14 7 7 0 000 14zM21 21l-5-5",
+        check: "M5 12l4 4 10-10",
+        x: "M6 6l12 12M18 6L6 18",
+        alert: "M12 3l10 18H2zM12 10v4M12 17.5h.01",
+        dash: "M7 12h10",
+        plus: "M12 5v14M5 12h14",
+        out: "M9 4H5v16h4M16 8l4 4-4 4M20 12H9",
+      };
+      const $ = (s) => document.querySelector(s),
+        pad = (n) => String(n).padStart(2, "0");
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const ic = (n, s = 18) =>
+        `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${I[n]}"/></svg>`;
+      const tm = (m) => pad(Math.floor(m / 60)) + ":" + pad(m % 60),
+        mn = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5),
+        hh = (m) => Math.floor(m / 60) + "h " + pad(Math.round(m % 60)) + "m";
+      const R = (a, b, c) => {
+        const x = Math.sin(a * 127.1 + b * 311.7 + c * 74.7) * 43758.5453;
+        return x - Math.floor(x);
+      };
+      const KC = {
+        ACCEPTED: "ok",
+        CONFIRMED: "ok",
+        APPROVED: "ok",
+        NEEDS_REVIEW: "wn",
+        REJECTED: "er",
+        "POSSIBLE ABSENCE": "er",
+        UNCONFIRMED: "nn",
+        ABSENT: "nn",
+        PENDING: "nn",
+        "NOT STARTED": "nn",
+      };
+      const CI = { ok: "check", wn: "alert", er: "x", nn: "dash", in: "plus" };
+      const cK = (k, t) =>
+        `<span class="chip ${k}">${ic(CI[k], 14)}${t}</span>`;
+      const LB = (s) =>
+        s.charAt(0) + s.slice(1).toLowerCase().replace("_", " ");
+      const chip = (s) => cK(KC[s], LB(s));
+      const DAYS = [
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14",
+          "2026-10-15",
+          "2026-10-16",
+          "2026-10-19",
+          "2026-10-20",
+          "2026-10-21",
+        ],
+        TD = 7,
+        NOWM = 702,
+        NOW = "11:42",
+        ME = "Marat Seitov";
+      const fd = (s) =>
+        new Date(s + "T00:00:00Z").toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          timeZone: "UTC",
+        });
+      const dl = (d) =>
+        new Date(DAYS[d] + "T00:00:00Z").toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          timeZone: "UTC",
+        });
+      /* ---------- seed data ---------- */
+      const ST = {
+        grace: 10,
+        acc: 50,
+        ot: 30,
+        pres: 1,
+        imin: 30,
+        imax: 90,
+        n: 3,
+        remote: 1,
+      };
+      const WP = [
+        {
+          name: "HQ Office",
+          addr: "12 Dostyk Ave, Astana",
+          lat: 51.1283,
+          lng: 71.4305,
+          r: 100,
+          on: 1,
+        },
+        {
+          name: "Branch Warehouse",
+          addr: "8 Industrial St, Astana",
+          lat: 51.095,
+          lng: 71.39,
+          r: 150,
+          on: 1,
+        },
+      ];
+      const SCH = [
+        {
+          name: "Office hours",
+          days: [1, 1, 1, 1, 1, 0, 0],
+          s: "09:00",
+          e: "18:00",
+          br: 60,
+          gr: 10,
+        },
+        {
+          name: "Early shift",
+          days: [1, 1, 1, 1, 1, 0, 0],
+          s: "08:00",
+          e: "17:00",
+          br: 60,
+          gr: 10,
+        },
+      ];
+      const E = [
+        ["Aigerim Sadykova", "Employee", 0, 0],
+        ["Daniyar Omarov", "Employee", 0, 0],
+        ["Madina Bekova", "Manager", 0, 0],
+        ["Timur Akhmetov", "Employee", 0, 0],
+        ["Aliya Nurgaliyeva", "Employee", 0, 0],
+        ["Yerlan Zhumabayev", "Manager", 1, 1],
+        ["Saule Kassymova", "Employee", 0, 0],
+        ["Nurlan Abdrakhmanov", "Employee", 1, 1],
+        ["Zhanna Iskakova", "Administrator", 0, 0],
+        ["Arman Tulegenov", "Employee", 1, 1],
+        ["Dinara Kenzhebekova", "Employee", 0, 0],
+        ["Ruslan Mukhametov", "Employee", 0, 0],
+      ].map((a, i) => ({
+        id: i,
+        name: a[0],
+        email: a[0].toLowerCase().replace(" ", ".") + "@nomad.kz",
+        role: a[1],
+        wp: a[2],
+        sch: a[3],
+        act: i != 11,
+      }));
+      const ABS = ["3,1", "7,3", "5,7", "9,7"],
+        LATE = {
+          "2,0": 22,
+          "6,2": 15,
+          "0,5": 12,
+          "8,4": 18,
+          "10,7": 14,
+          "3,7": 25,
+        },
+        EARLY = { "4,2": 25, "7,0": 20 },
+        OT = { "1,4": 45, "9,1": 40, "0,3": 35 },
+        REV = { "1,7": [85, 40], "8,7": [120, 55], "5,6": [92, 60] },
+        UNC = ["0,6", "9,6"],
+        PAO = { "6,7": [610, 655, 700], "10,6": [840, 885, 930] };
+      const REC = [];
+      E.forEach((e) => {
+        if (!e.act) return;
+        DAYS.forEach((_, d) => {
+          const k = e.id + "," + d,
+            sc = SCH[e.sch],
+            s0 = mn(sc.s),
+            en = mn(sc.e),
+            w = WP[e.wp];
+          const r = {
+            id: REC.length + 1,
+            e: e.id,
+            d,
+            marks: [],
+            checks: [],
+            dec: null,
+            st: "ACCEPTED",
+            in: null,
+            out: null,
+            unc: 0,
+            pa: null,
+          };
+          REC.push(r);
+          if (ABS.includes(k)) {
+            r.st = "ABSENT";
+            return;
+          }
+          const mk = (type, t, st, dist, acc) => ({
+            type,
+            t,
+            st,
+            dist,
+            acc,
+            lat: (w.lat + (dist * 0.6) / 111000).toFixed(5),
+            lng: (w.lng + (dist * 0.8) / 70000).toFixed(5),
+            srv: tm(t) + ":" + pad(Math.floor(R(e.id, d, t) * 60)),
+          });
+          if (k == "4,3") {
+            r.st = "REJECTED";
+            r.marks.push(mk("Check-in", 547, "REJECTED", 240, 11));
+            return;
+          }
+          const rv = REV[k];
+          r.in = s0 + (k in LATE ? LATE[k] : Math.round(R(e.id, d, 1) * 9 - 3));
+          r.marks.push(
+            mk(
+              "Check-in",
+              r.in,
+              rv ? "NEEDS_REVIEW" : "ACCEPTED",
+              rv ? rv[1] : 10 + Math.floor(R(e.id, d, 4) * 60),
+              rv ? rv[0] : 5 + Math.floor(R(e.id, d, 5) * 14),
+            ),
+          );
+          if (rv) r.st = "NEEDS_REVIEW";
+          if (d < TD) {
+            if (UNC.includes(k)) r.unc = 1;
+            else {
+              r.out =
+                k in EARLY
+                  ? en - EARLY[k]
+                  : en + (k in OT ? OT[k] : Math.round(R(e.id, d, 2) * 20 - 4));
+              r.marks.push(
+                mk(
+                  "Check-out",
+                  r.out,
+                  "ACCEPTED",
+                  10 + Math.floor(R(e.id, d, 6) * 60),
+                  5 + Math.floor(R(e.id, d, 7) * 14),
+                ),
+              );
+            }
+          }
+          const pa = PAO[k],
+            last = r.out || (d == TD ? NOWM : en);
+          let t = r.in + 40;
+          while (t < last - 30 && (!pa || t < pa[0] - 20)) {
+            r.checks.push({
+              t,
+              s: R(e.id, d, t) < 0.07 ? "UNCONFIRMED" : "CONFIRMED",
+            });
+            t += 60;
+          }
+          if (pa) {
+            pa.forEach((t, i) =>
+              r.checks.push({
+                t,
+                s: i < 2 ? "UNCONFIRMED" : "POSSIBLE ABSENCE",
+              }),
+            );
+            r.pa = { from: pa[0], to: pa[2], dismissed: 0 };
+          }
+        });
+      });
+      const REQ = [
+        {
+          id: 1,
+          e: 2,
+          ty: "Remote work",
+          from: "2026-10-23",
+          to: "2026-10-23",
+          cm: "Waiting for a plumber at home.",
+          st: "PENDING",
+        },
+        {
+          id: 2,
+          e: 6,
+          ty: "Vacation",
+          from: "2026-10-26",
+          to: "2026-10-30",
+          cm: "Family trip.",
+          st: "PENDING",
+        },
+        {
+          id: 3,
+          e: 10,
+          ty: "Vacation",
+          from: "2026-11-02",
+          to: "2026-11-13",
+          cm: "Annual leave.",
+          st: "APPROVED",
+          by: ME,
+          at: "14 Oct, 10:20",
+          ac: "Approved.",
+        },
+        {
+          id: 4,
+          e: 4,
+          ty: "Schedule change",
+          from: "2026-10-15",
+          to: "2026-10-15",
+          cm: "Need to start at 10:00.",
+          st: "REJECTED",
+          by: ME,
+          at: "14 Oct, 16:05",
+          ac: "Not possible during audit week.",
+        },
+      ];
+      /* ---------- derived ---------- */
+      const sch = (r) => SCH[E[r.e].sch],
+        wpn = (r) => WP[E[r.e].wp];
+      const lateM = (r) => {
+        if (r.in == null) return 0;
+        const s = sch(r),
+          d = r.in - mn(s.s);
+        return d > s.gr ? d : 0;
+      };
+      const earlyM = (r) => {
+        if (r.out == null) return 0;
+        const d = mn(sch(r).e) - r.out;
+        return d > 10 ? d : 0;
+      };
+      const otM = (r) => {
+        if (r.out == null) return 0;
+        const d = r.out - mn(sch(r).e);
+        return d >= ST.ot ? d : 0;
+      };
+      const wk = (r) =>
+        r.in == null || r.st == "REJECTED"
+          ? null
+          : r.out != null
+            ? r.out - r.in - sch(r).br
+            : r.unc
+              ? null
+              : NOWM - r.in;
+      const cs = (r, c) =>
+        c.s == "POSSIBLE ABSENCE" && r.pa && r.pa.dismissed
+          ? "UNCONFIRMED"
+          : c.s;
+      const cpm = (r) => {
+        const w = wk(r);
+        return w == null
+          ? null
+          : w - 30 * r.checks.filter((c) => c.s != "CONFIRMED").length;
+      };
+      const ens = () => E.filter((e) => e.act),
+        cin = (r) => r.in != null && r.st != "REJECTED";
+      const pend = () => REQ.filter((q) => q.st == "PENDING").length;
+      /* ---------- state ---------- */
+      let S = {
+        user: 0,
+        page: "dash",
+        eq: "",
+        er: "",
+        ewp: "",
+        est: "",
+        dr: null,
+        pop: null,
+        modal: null,
+        menu: 0,
+        wsel: 0,
+        ssel: 0,
+        sd: null,
+        rm: "week",
+        rd: "2026-10-21",
+        rt: "PENDING",
+        err: 0,
+      };
+      const freshF = () => ({
+        emp: "",
+        from: DAYS[0],
+        to: DAYS[TD],
+        st: "",
+        wp: "",
+        q: "",
+      });
+      let F = freshF();
+      const TG = {
+        dash: ["Dashboard", "UC-14, UC-15, UC-16, UC-18"],
+        att: ["Attendance", "UC-14, FR-27"],
+        emp: ["Employees", "UC-11"],
+        wp: ["Workplaces", "UC-12"],
+        sch: ["Schedules", "UC-13"],
+        req: ["Requests", "UC-16"],
+        rep: ["Reports", "UC-17"],
+        set: ["Settings", "UC-10, FR-25"],
+      };
+      const NV = [
+        ["dash", "grid"],
+        ["att", "clock"],
+        ["emp", "users"],
+        ["wp", "pin"],
+        ["sch", "cal"],
+        ["req", "inbox"],
+        ["rep", "bars"],
+        ["set", "gear"],
+      ];
+      function toast(t) {
+        const e = $("#toast");
+        e.textContent = t;
+        e.classList.add("on");
+        clearTimeout(toast.t);
+        toast.t = setTimeout(() => e.classList.remove("on"), 2400);
+      }
+      function go(p) {
+        S.page = p;
+        S.dr = null;
+        S.pop = null;
+        S.sd = null;
+        render();
+        const m = $("#main");
+        if (m) m.scrollTop = 0;
+      }
+      /* ---------- pages ---------- */
+      function items() {
+        return [
+          ...REC.filter((r) => r.st == "NEEDS_REVIEW").map((r) => ({
+            t: "rv",
+            r,
+          })),
+          ...REC.filter((r) => r.unc).map((r) => ({ t: "uc", r })),
+          ...REC.filter((r) => r.pa && !r.pa.dismissed).map((r) => ({
+            t: "pa",
+            r,
+          })),
+          ...REQ.filter((q) => q.st == "PENDING").map((q) => ({ t: "rq", q })),
+        ];
+      }
+      function dash() {
+        const T = REC.filter((r) => r.d == TD && E[r.e].act),
+          ci = T.filter(cin),
+          late = ci.filter(lateM),
+          ab = T.filter((r) => r.st == "ABSENT"),
+          rv = REC.filter((r) => r.st == "NEEDS_REVIEW");
+        const K = [
+          [
+            "Checked in",
+            ci.length,
+            `of ${ens().length} active employees`,
+            "checked",
+            "ok",
+          ],
+          ["Late", late.length, "arrived after grace period", "late", "wn"],
+          ["Absent", ab.length, "no check-in today", "absent", "nn"],
+          [
+            "Needs review",
+            rv.length,
+            `${rv.filter((r) => r.d == TD).length} from today`,
+            "review",
+            "wn",
+          ],
+        ];
+        const its = items(),
+          B = (c, l, a) =>
+            `<button class="b s ${c}" onclick="${a}">${l}</button>`;
+        const row = (x) => {
+          let ty, tx, ac;
+          if (x.t == "rv") {
+            const r = x.r,
+              m = r.marks.find((m) => m.st == "NEEDS_REVIEW");
+            ty = chip("NEEDS_REVIEW");
+            tx = `<b>${E[r.e].name}</b><span class="m sm">${dl(r.d)} · ${m.type.toLowerCase()} ${tm(m.t)} · ±${m.acc} m accuracy, ${m.dist} m from ${wpn(r).name}</span>`;
+            ac =
+              B("", "Details", `openRec(${r.id})`) +
+              B("ok", "Approve", `ask(event,'rec',${r.id},'A')`) +
+              B("er", "Reject", `ask(event,'rec',${r.id},'R')`);
+          }
+          if (x.t == "uc") {
+            const r = x.r;
+            ty = cK("wn", "Unclosed session");
+            tx = `<b>${E[r.e].name}</b><span class="m sm">${dl(r.d)} · checked in ${tm(r.in)}, no check-out</span>`;
+            ac =
+              B("", "Details", `openRec(${r.id})`) +
+              B("p", `Close at ${sch(r).e}`, `closeS(${r.id})`);
+          }
+          if (x.t == "pa") {
+            const r = x.r;
+            ty = chip("POSSIBLE ABSENCE");
+            tx = `<b>${E[r.e].name}</b><span class="m sm">${dl(r.d)} · ${tm(r.pa.from)}–${tm(r.pa.to)} · ${ST.n} failed checks in a row</span>`;
+            ac =
+              B("", "Details", `openRec(${r.id})`) +
+              B("", "Dismiss", `dismiss(${r.id})`);
+          }
+          if (x.t == "rq") {
+            const q = x.q;
+            ty = cK("in", "Request");
+            tx = `<b>${E[q.e].name}</b><span class="m sm">${q.ty} · ${per(q)}</span>`;
+            ac =
+              B("ok", "Approve", `ask(event,'req',${q.id},'A')`) +
+              B("er", "Reject", `ask(event,'req',${q.id},'R')`);
+          }
+          return `<div class="it"><div class="ty">${ty}</div><div class="tx">${tx}</div><div class="fl" style="gap:6px">${ac}</div></div>`;
+        };
+        const rows = ens()
+          .map((e) => {
+            const r = T.find((r) => r.e == e.id),
+              lc = r && r.checks.length ? r.checks[r.checks.length - 1] : null;
+            return `<tr class="k" tabindex="0" onclick="openRec(${r ? r.id : 0})" onkeydown="if(event.key=='Enter')this.click()"><td><b>${e.name}</b></td><td>${WP[e.wp].name}</td><td>${r && cin(r) ? tm(r.in) : "—"}</td><td>${r ? chip(r.st) : chip("NOT STARTED")}${r && lateM(r) ? " " + cK("wn", "Late " + lateM(r) + " min") : ""}</td><td>${r && wk(r) != null ? hh(wk(r)) : "—"}</td><td>${lc ? chip(cs(r, lc)) : '<span class="m">—</span>'}</td></tr>`;
+          })
+          .join("");
+        return `<div class="grid4">${K.map((k) => `<button class="kpi" onclick="kpi('${k[3]}')"><span class="m sm">${k[0]} today</span><b>${k[1]}</b><span class="sm m">${k[2]}</span></button>`).join("")}</div>
+<div class="c" style="padding:0;margin-bottom:16px"><div class="fl" style="padding:14px 16px;border-bottom:1px solid var(--b)"><h3>Needs attention</h3>${cK(its.length ? "wn" : "ok", its.length + " open")}</div><div class="ls">${its.length ? its.map(row).join("") : '<p class="em">All clear. Nothing needs your attention.</p>'}</div></div>
+<h3 style="margin-bottom:8px">Today · ${dl(TD)}, as of ${NOW}</h3><div class="tw h"><table><thead><tr><th>Employee</th><th>Workplace</th><th>Check-in</th><th>Status</th><th>Worked so far</th><th>Presence</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      }
+      const per = (q) =>
+        q.from == q.to ? fd(q.from) : fd(q.from) + " – " + fd(q.to);
+      function kpi(q) {
+        F = freshF();
+        if (q == "review") F.st = "NEEDS_REVIEW";
+        else if (q == "absent") {
+          F.st = "ABSENT";
+          F.from = F.to = DAYS[TD];
+        } else {
+          F.q = q;
+          F.from = F.to = DAYS[TD];
+        }
+        go("att");
+      }
+      const QL = { checked: "Checked in today", late: "Late today" };
+      function attRows() {
+        return REC.filter(
+          (r) =>
+            (!F.emp || r.e == F.emp) &&
+            DAYS[r.d] >= F.from &&
+            DAYS[r.d] <= F.to &&
+            (!F.st || r.st == F.st) &&
+            (!F.wp || E[r.e].wp == F.wp) &&
+            (F.q != "checked" || cin(r)) &&
+            (F.q != "late" || lateM(r)),
+        ).sort((a, b) => b.d - a.d || E[a.e].name.localeCompare(E[b.e].name));
+      }
+      function att() {
+        const rs = attRows();
+        const o = (v, l, s) =>
+          `<option value="${v}" ${s == v ? "selected" : ""}>${l}</option>`;
+        const body = rs
+          .map((r) => {
+            const l = lateM(r),
+              ea = earlyM(r),
+              ot = otM(r),
+              n = r.checks.length,
+              c = r.checks.filter((c) => cs(r, c) == "CONFIRMED").length,
+              w = wk(r);
+            return `<tr class="k" tabindex="0" onclick="openRec(${r.id})" onkeydown="if(event.key=='Enter')this.click()"><td><b>${E[r.e].name}</b></td><td>${dl(r.d)}</td><td>${cin(r) ? tm(r.in) : "—"}</td><td>${r.out != null ? tm(r.out) : r.unc ? cK("wn", "Unclosed") : r.d == TD && r.in != null ? cK("in", "In progress") : "—"}</td><td>${w != null ? hh(w) : "—"}</td><td>${[l ? cK("wn", "Late " + l + " min") : "", ea ? cK("wn", "Early " + ea + " min") : "", ot ? cK("in", "Overtime " + ot + " min") : ""].join(" ") || "—"}</td><td>${chip(r.st)}</td><td>${n ? `${c}/${n} confirmed ` : "—"}${r.pa && !r.pa.dismissed ? chip("POSSIBLE ABSENCE") : ""}</td></tr>`;
+          })
+          .join("");
+        return `<div class="bar"><label>Employee<select onchange="F.emp=this.value;render()"><option value="">All employees</option>${E.map((e) => o(e.id, e.name, F.emp)).join("")}</select></label>
+<label>From<input type="date" value="${F.from}" min="${DAYS[0]}" max="${DAYS[TD]}" onchange="F.from=this.value||DAYS[0];render()"></label><label>To<input type="date" value="${F.to}" min="${DAYS[0]}" max="${DAYS[TD]}" onchange="F.to=this.value||DAYS[TD];render()"></label>
+<label>Status<select onchange="F.st=this.value;render()">${o("", "All statuses", F.st)}${["ACCEPTED", "NEEDS_REVIEW", "REJECTED", "ABSENT"].map((s) => o(s, LB(s), F.st)).join("")}</select></label>
+<label>Workplace<select onchange="F.wp=this.value;render()">${o("", "All workplaces", F.wp)}${WP.map((w, i) => o(i, w.name, F.wp)).join("")}</select></label>
+${F.q ? `<button class="b" onclick="F.q='';render()">Filter: ${QL[F.q]} ${ic("x", 14)}</button>` : ""}<button class="b" onclick="F=freshF();render()">Reset filters</button><span class="sp"></span><span class="m sm">${rs.length} records</span></div>
+<div class="tw"><table><thead><tr><th>Employee</th><th>Date</th><th>Check-in</th><th>Check-out</th><th>Worked</th><th>Late / early</th><th>Status</th><th>Presence</th></tr></thead><tbody>${body || '<tr><td colspan="8" class="em">No records match these filters.</td></tr>'}</tbody></table></div>`;
+      }
+      function empRows() {
+        const q = S.eq.toLowerCase(),
+          L = E.filter(
+            (e) =>
+              (!q || (e.name + e.email).toLowerCase().includes(q)) &&
+              (!S.er || e.role == S.er) &&
+              (S.ewp === "" || e.wp == S.ewp) &&
+              (!S.est || (S.est == "A") == e.act),
+          );
+        return (
+          L.map(
+            (e) =>
+              `<tr><td><b>${esc(e.name)}</b><div class="m sm">${esc(e.email)}</div></td><td>${e.role}</td><td>${WP[e.wp].name}</td><td>${SCH[e.sch].name}</td><td>${e.act ? cK("ok", "Active") : cK("nn", "Inactive")}</td><td class="fl" style="gap:6px"><button class="b s" onclick="openEmp(${e.id})">Edit</button>${e.act ? `<button class="b s er" onclick="S.modal=${e.id};render()">Deactivate</button>` : `<button class="b s" onclick="activate(${e.id})">Activate</button>`}</td></tr>`,
+          ).join("") ||
+          '<tr><td colspan="6" class="em">No employees found. Try a different search.</td></tr>'
+        );
+      }
+      function emp() {
+        const o = (v, l, s) =>
+          `<option value="${v}" ${s == v ? "selected" : ""}>${l}</option>`;
+        return `<div class="bar"><label>Search<input id="eqs" style="width:260px" placeholder="Name or email" value="${esc(S.eq)}" oninput="S.eq=this.value;$('#eb').innerHTML=empRows()"></label>
+<label>Role<select onchange="S.er=this.value;render()">${o("", "All roles", S.er)}${["Employee", "Manager", "Administrator"].map((r) => o(r, r, S.er)).join("")}</select></label>
+<label>Workplace<select onchange="S.ewp=this.value;render()">${o("", "All workplaces", S.ewp)}${WP.map((w, i) => o(i, w.name, S.ewp)).join("")}</select></label>
+<label>Status<select onchange="S.est=this.value;render()">${o("", "All", S.est)}${o("A", "Active", S.est)}${o("I", "Inactive", S.est)}</select></label><span class="sp"></span><button class="b p" onclick="openEmp(null)">${ic("plus", 16)}Add employee</button></div>
+<div class="tw"><table><thead><tr><th>Employee</th><th>Role</th><th>Workplace</th><th>Schedule</th><th>Status</th><th>Actions</th></tr></thead><tbody id="eb">${empRows()}</tbody></table></div>`;
+      }
+      function mapIn(r) {
+        const sc = 0.28,
+          pts = [
+            [35, -0.6],
+            [120, 0.9],
+            [240, 2.4],
+          ];
+        let g = "";
+        for (let i = 0; i <= 400; i += 50)
+          g += `<path d="M${i} 0V300" stroke="#fff" stroke-width="${i % 100 ? 6 : 12}"/>`;
+        for (let i = 0; i <= 300; i += 50)
+          g += `<path d="M0 ${i}H400" stroke="#fff" stroke-width="${i % 100 ? 6 : 12}"/>`;
+        return (
+          g +
+          `<circle cx="200" cy="150" r="${r * sc}" fill="rgba(36,87,214,.16)" stroke="#2457D6" stroke-width="2" stroke-dasharray="6 4"/>` +
+          pts
+            .map((p) => {
+              const x = 200 + Math.cos(p[1]) * p[0] * sc,
+                y = 150 + Math.sin(p[1]) * p[0] * sc,
+                k = p[0] <= r ? "#16A34A" : "#DC2626";
+              return `<circle cx="${x}" cy="${y}" r="5" fill="${k}" stroke="#fff" stroke-width="2"/><text x="${x + 8}" y="${y + 4}" font-size="11" fill="#1B2430">${p[0]} m</text>`;
+            })
+            .join("") +
+          `<path d="M200 160c-8-8-12-14-12-20a12 12 0 0124 0c0 6-4 12-12 20z" fill="#2457D6" stroke="#fff" stroke-width="2"/><circle cx="200" cy="140" r="4" fill="#fff"/><path d="M12 284h28" stroke="#1B2430" stroke-width="2"/><text x="46" y="288" font-size="11" fill="#1B2430">100 m</text>`
+        );
+      }
+      function wp() {
+        const w = WP[S.wsel];
+        return `<div class="two3"><div>${WP.map((x, i) => `<button class="li ${i == S.wsel ? "on" : ""}" onclick="S.wsel=${i};render()"><b>${esc(x.name)}</b><div class="m sm">${esc(x.addr)}</div><div class="fl" style="margin-top:6px">${x.on ? cK("ok", "Active") : cK("nn", "Inactive")}<span class="sm m">radius ${x.r} m</span></div></button>`).join("")}<button class="b" style="width:100%;justify-content:center" onclick="addWp()">${ic("plus", 16)}Add workplace</button></div>
+<div class="cols" style="align-items:start"><div class="c"><label class="f">Name<input id="wn" value="${esc(w.name)}"></label><label class="f">Address<input id="wa" value="${esc(w.addr)}"></label>
+<div class="cols" style="gap:0 12px"><label class="f">Latitude<input id="wla" value="${w.lat}"></label><label class="f">Longitude<input id="wlo" value="${w.lng}"></label></div>
+<label class="f">Geofence radius (m)</label><div class="fl" style="margin:-8px 0 12px"><input id="wr" type="range" min="20" max="500" value="${w.r}" style="flex:1;padding:0" oninput="rad(this.value)" aria-label="Radius slider"><input id="wrn" type="number" min="20" max="500" value="${w.r}" style="width:80px" oninput="rad(this.value)" aria-label="Radius in metres"></div>
+<div class="fl" style="margin-bottom:12px"><input type="checkbox" class="tg" id="won" ${w.on ? "checked" : ""} aria-label="Active"><span>Active</span></div><p class="err" id="we" hidden></p><button class="b p" onclick="saveWp()">Save workplace</button></div>
+<div><div class="map"><svg id="map" viewBox="0 0 400 300" width="100%" role="img" aria-label="Schematic map with geofence">${mapIn(w.r)}</svg></div><p class="sm m" style="margin-top:8px">Schematic map, not to scale. Dots show sample marks: green is inside the zone, red is outside.</p>
+<div class="c" style="margin-top:12px;background:var(--wnb);border-color:#F3DC9A"><p class="sm">GPS can be inaccurate indoors; marks with accuracy above the threshold (${ST.acc} m) go to review.</p></div></div></div></div>`;
+      }
+      function sch_() {
+        const s = SCH[S.ssel];
+        if (!S.sd) S.sd = s.days.slice();
+        const D = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        return `<div class="two3"><div>${SCH.map((x, i) => `<button class="li ${i == S.ssel ? "on" : ""}" onclick="S.ssel=${i};S.sd=null;render()"><b>${esc(x.name)}</b><div class="m sm">${x.s}–${x.e}, break ${x.br} min</div><div class="sm m">${E.filter((e) => e.act && e.sch == i).length} employees</div></button>`).join("")}<button class="b" style="width:100%;justify-content:center" onclick="addSch()">${ic("plus", 16)}Add schedule</button></div>
+<div class="cols" style="align-items:start"><div class="c"><label class="f">Name<input id="sn" value="${esc(s.name)}"></label><p class="sm m" style="font-weight:600;margin-bottom:6px">Working days</p><div class="fl" style="gap:6px;margin-bottom:12px">${D.map((d, i) => `<button class="dy" aria-pressed="${!!S.sd[i]}" onclick="S.sd[${i}]=S.sd[${i}]?0:1;this.setAttribute('aria-pressed',!!S.sd[${i}])">${d}</button>`).join("")}</div>
+<div class="cols" style="gap:0 12px"><label class="f">Start<input id="ss" type="time" value="${s.s}"></label><label class="f">End<input id="se" type="time" value="${s.e}"></label><label class="f">Break (min)<input id="sb" type="number" min="0" value="${s.br}"></label><label class="f">Grace period (min)<input id="sg" type="number" min="0" value="${s.gr}"></label></div><p class="err" id="sx" hidden></p><button class="b p" onclick="saveSch()">Save schedule</button></div>
+<div class="c"><h3 style="margin-bottom:4px">Assign to employees</h3><p class="sm m" style="margin-bottom:8px">Each employee has one active schedule. Selecting an employee moves them here.</p>${ens()
+          .map(
+            (e) =>
+              `<label class="row" style="cursor:pointer"><input type="checkbox" class="tg" id="as${e.id}" ${e.sch == S.ssel ? "checked" : ""}><span style="flex:1">${e.name}</span>${e.sch == S.ssel ? "" : `<span class="sm m">${SCH[e.sch].name}</span>`}</label>`,
+          )
+          .join("")}</div></div></div>`;
+      }
+      function reqs() {
+        const L = REQ.filter((q) => q.st == S.rt),
+          T = [
+            ["PENDING", "Pending"],
+            ["APPROVED", "Approved"],
+            ["REJECTED", "Rejected"],
+          ];
+        return `<div class="tabs">${T.map((t) => `<button class="${S.rt == t[0] ? "on" : ""}" onclick="S.rt='${t[0]}';render()">${t[1]} (${REQ.filter((q) => q.st == t[0]).length})</button>`).join("")}</div>
+<div class="tw"><table><thead><tr><th>Employee</th><th>Type</th><th>Period</th><th>Comment</th><th>${S.rt == "PENDING" ? "Actions" : "Decision"}</th></tr></thead><tbody>${L.map((q) => `<tr><td><b>${E[q.e].name}</b></td><td>${q.ty}</td><td>${per(q)}</td><td>${esc(q.cm)}</td><td>${q.st == "PENDING" ? `<div class="fl" style="gap:6px"><button class="b s ok" onclick="ask(event,'req',${q.id},'A')">Approve</button><button class="b s er" onclick="ask(event,'req',${q.id},'R')">Reject</button></div>` : `${chip(q.st)}<div class="sm m">${q.by}, ${q.at}${q.ac ? " · “" + esc(q.ac) + "”" : ""}</div>`}</td></tr>`).join("") || `<tr><td colspan="5" class="em">No ${LB(S.rt).toLowerCase()} requests.</td></tr>`}</tbody></table></div>`;
+      }
+      function rdays() {
+        const ix = DAYS.map((_, i) => i),
+          dt = new Date(S.rd + "T00:00:00Z");
+        if (S.rm == "day") return ix.filter((i) => DAYS[i] == S.rd);
+        if (S.rm == "month")
+          return ix.filter((i) => DAYS[i].slice(0, 7) == S.rd.slice(0, 7));
+        const mon = new Date(+dt - ((dt.getUTCDay() + 6) % 7) * 864e5)
+            .toISOString()
+            .slice(0, 10),
+          sun = new Date(+new Date(mon) + 6 * 864e5).toISOString().slice(0, 10);
+        return ix.filter((i) => DAYS[i] >= mon && DAYS[i] <= sun);
+      }
+      function chart(v, lb) {
+        const W = 640,
+          H = 230,
+          pl = 40,
+          pb = 28,
+          mx = Math.max(1, ...v),
+          top = mx > 10 ? Math.ceil(mx / 10) * 10 : Math.ceil(mx),
+          n = v.length,
+          bw = (W - pl) / n,
+          ch = H - pb - 10;
+        let g = "";
+        for (let i = 0; i <= 4; i++) {
+          const y = 10 + ch * (1 - i / 4);
+          g += `<path d="M${pl} ${y}H${W}" stroke="#E3E8F0"/><text x="${pl - 6}" y="${y + 4}" font-size="11" text-anchor="end" fill="#5B6676">${((top * i) / 4).toFixed(top < 4 ? 1 : 0)}</text>`;
+        }
+        return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Worked hours chart">${g}${v
+          .map((x, i) => {
+            const h = (ch * x) / top,
+              bx = pl + i * bw + bw * 0.2;
+            return `<rect x="${bx}" y="${10 + ch - h}" width="${bw * 0.6}" height="${h}" rx="4" fill="#2457D6"><title>${lb[i]}: ${x.toFixed(1)} h</title></rect><text x="${bx + bw * 0.3}" y="${H - 10}" font-size="11" text-anchor="middle" fill="#5B6676">${lb[i]}</text>`;
+          })
+          .join("")}</svg>`;
+      }
+      function rep() {
+        const ds = rdays(),
+          rs = REC.filter((r) => ds.includes(r.d) && E[r.e].act),
+          W = rs.map(wk).filter((x) => x != null),
+          sum = (a) => a.reduce((x, y) => x + y, 0);
+        const kp = [
+          ["Worked days", W.length],
+          ["Worked hours", hh(sum(W))],
+          ["Late arrivals", rs.filter(lateM).length],
+          ["Early leaving", rs.filter(earlyM).length],
+          ["Absences", rs.filter((r) => r.st == "ABSENT").length],
+          ["Overtime", hh(sum(rs.map(otM)))],
+        ];
+        let v, lb;
+        if (S.rm == "day") {
+          const a = rs.filter((r) => wk(r) != null);
+          v = a.map((r) => wk(r) / 60);
+          lb = a.map((r) => E[r.e].name.split(" ")[0].slice(0, 6));
+        } else {
+          v = ds.map(
+            (d) => sum(rs.filter((r) => r.d == d).map((r) => wk(r) || 0)) / 60,
+          );
+          lb = ds.map((d) => fd(DAYS[d]));
+        }
+        const trs = ens()
+          .map((e) => {
+            const a = rs.filter((r) => r.e == e.id),
+              w = a.map(wk).filter((x) => x != null);
+            return a.length
+              ? `<tr><td><b>${e.name}</b></td><td>${w.length}</td><td>${hh(sum(w))}</td><td>${a.filter(lateM).length}</td><td>${a.filter(earlyM).length}</td><td>${a.filter((r) => r.st == "ABSENT").length}</td><td>${hh(sum(a.map(otM)))}</td></tr>`
+              : "";
+          })
+          .join("");
+        const ck = [].concat(...rs.map((r) => r.checks.map((c) => cs(r, c)))),
+          pc = (s) =>
+            ck.length
+              ? Math.round((100 * ck.filter((c) => c == s).length) / ck.length)
+              : 0,
+          P = ["CONFIRMED", "UNCONFIRMED", "POSSIBLE ABSENCE"],
+          col = {
+            CONFIRMED: "#16A34A",
+            UNCONFIRMED: "#94A3B8",
+            "POSSIBLE ABSENCE": "#DC2626",
+          };
+        return `<div class="bar"><div class="tabs" style="margin:0">${["day", "week", "month"].map((m) => `<button class="${S.rm == m ? "on" : ""}" onclick="S.rm='${m}';render()">${LB(m.toUpperCase())}</button>`).join("")}</div><label>Date<input type="date" value="${S.rd}" onchange="S.rd=this.value||S.rd;render()"></label><span class="sp"></span><button class="b" onclick="toast('Export is planned')">Export CSV</button></div>
+${
+  rs.length
+    ? `<div class="grid6">${kp.map((k) => `<div class="kpi" style="cursor:default"><span class="m sm">${k[0]}</span><b style="font-size:22px">${k[1]}</b></div>`).join("")}</div>
+<div class="c" style="margin-bottom:16px"><h3>Worked hours ${S.rm == "day" ? "by employee" : "per day"}</h3>${chart(v, lb)}</div>
+<h3 style="margin-bottom:8px">By employee</h3><div class="tw h" style="margin-bottom:16px"><table><thead><tr><th>Employee</th><th>Worked days</th><th>Worked hours</th><th>Late</th><th>Early leaving</th><th>Absences</th><th>Overtime</th></tr></thead><tbody>${trs}</tbody></table></div>
+<div class="c"><h3>Presence verification results</h3><p class="sm m">${ck.length} presence checks in the selected period</p><div class="pbar">${P.map((s) => `<i style="width:${pc(s)}%;background:${col[s]}"></i>`).join("")}</div><div class="fl" style="gap:24px">${P.map((s) => `<span class="fl" style="gap:8px">${chip(s)}<b>${pc(s)}%</b></span>`).join("")}</div></div>`
+    : '<div class="c em">No attendance data for this period. Choose a date between 12 and 21 Oct 2026.</div>'
+}`;
+      }
+      function set() {
+        const n = (id, l, v, u) =>
+            `<label class="f">${l}<input id="${id}" type="number" min="0" value="${v}"></label>`,
+          t = (id, l, d, on, dis) =>
+            `<div class="row"><div style="flex:1"><b>${l}</b><div class="sm m">${d}</div></div>${dis ? cK("nn", "Coming soon") : ""}<input type="checkbox" class="tg" id="${id}" ${on ? "checked" : ""} ${dis ? "disabled" : ""} aria-label="${l}"></div>`;
+        return `<div class="cols" style="align-items:start;max-width:1000px"><div class="c"><h3 style="margin-bottom:12px">Attendance rules</h3>${n("xg", "Default grace period (min)", ST.grace)}${n("xa", "GPS accuracy threshold (m)", ST.acc)}<label class="f">Overtime rule<select id="xo">${[15, 30, 60].map((v) => `<option value="${v}" ${ST.ot == v ? "selected" : ""}>Starts ${v} min after schedule end</option>`).join("")}</select></label>${t("xr", "Remote work requests", "Employees can request remote work days", ST.remote)}</div>
+<div class="c"><h3 style="margin-bottom:12px">Presence checks</h3>${t("xp", "Presence checks", "Ask employees to confirm presence during the shift", ST.pres)}<div class="cols" style="gap:0 12px;margin-top:12px"><label class="f">Interval from (min)<input id="xi" type="number" min="5" value="${ST.imin}"></label><label class="f">Interval to (min)<input id="xj" type="number" min="5" value="${ST.imax}"></label></div>${n("xn", "Failed checks in a row before “possible absence”", ST.n)}<div class="c" style="background:var(--pc);border-color:var(--pc)"><p class="sm"><b>A single failed check is not a violation.</b> Only ${ST.n} failed checks in a row create a “possible absence” for review.</p></div></div>
+<div class="c" style="grid-column:1/3;margin-top:16px"><h3>Optional confirmation methods</h3>${t("xq", "QR code at workplace", "Confirm check-in by scanning a code", 0, 1)}${t("xb", "Biometrics", "Device fingerprint or face confirmation", 0, 1)}<p class="err" id="xe" hidden></p><div style="margin-top:12px"><button class="b p" onclick="saveSet()">Save settings</button></div></div></div>`;
+      }
+      /* ---------- drawer, modal, popover ---------- */
+      function recDr(r) {
+        const e = E[r.e],
+          w = wpn(r),
+          m = r.marks.find((m) => m.st == "NEEDS_REVIEW"),
+          cp = cpm(r);
+        return `<header><div style="flex:1"><h2 style="font-size:18px">${e.name}</h2><span class="m sm">${dl(r.d)} · ${w.name}</span></div>${chip(r.st)}<button class="ibtn" onclick="closeDr()" aria-label="Close">${ic("x")}</button></header><div class="bd">
+<p class="h3" style="margin-top:0">Marks</p>${r.marks.map((m) => `<div class="mk"><div class="fl"><b>${m.type} ${tm(m.t)}</b><span class="sp"></span>${chip(m.st)}</div><dl><dt>Coordinates</dt><dd>${m.lat}, ${m.lng}</dd><dt>Distance</dt><dd>${m.dist} m from ${w.name} (radius ${w.r} m)</dd><dt>GPS accuracy</dt><dd>±${m.acc} m</dd><dt>Server time</dt><dd>${m.srv}</dd></dl></div>`).join("") || '<p class="m">No marks recorded.</p>'}
+<p class="h3">Presence checks</p>${
+          r.checks.length
+            ? `<ul class="tl">${r.checks
+                .map((c) => {
+                  const s = cs(r, c);
+                  return `<li class="${KC[s]}"><b>${tm(c.t)}</b>${chip(s)}</li>`;
+                })
+                .join("")}</ul>`
+            : '<p class="m sm">No presence checks yet.</p>'
+        }
+${r.pa ? `<p class="sm m" style="margin-top:8px">${r.pa.dismissed ? "Possible absence was dismissed by the administrator." : `${ST.n} failed checks in a row between ${tm(r.pa.from)} and ${tm(r.pa.to)}.`}</p>` : ""}
+<div class="c" style="margin-top:16px;background:var(--pc);border-color:var(--pc)"><p class="sm">${r.in == null ? "No valid check-in registered." : r.unc ? `Registered interval ${tm(r.in)}–? (session not closed)` : `Registered interval ${tm(r.in)}–${r.out != null ? tm(r.out) : NOW}${cp != null ? `; confirmed presence ${hh(cp)}` : ""}`}</p></div>
+${r.dec ? `<div class="c" style="margin-top:12px"><p class="sm"><b>${r.dec.a == "A" ? "Approved" : "Rejected"}</b> by ${r.dec.by}, ${r.dec.at}</p>${r.dec.cm ? `<p class="sm m">“${esc(r.dec.cm)}”</p>` : ""}</div>` : ""}
+${m ? `<p class="h3">Review decision</p><label class="f">Comment (required)<textarea id="dcm" placeholder="Explain your decision"></textarea></label><p class="err" id="derr" hidden>Add a comment before deciding.</p><div class="fl"><button class="b ok" onclick="dDec(${r.id},'A')">Approve</button><button class="b er" onclick="dDec(${r.id},'R')">Reject</button></div>` : ""}</div>`;
+      }
+      function empDr(id) {
+        const e =
+            id == null
+              ? { name: "", email: "", role: "Employee", wp: 0, sch: 0 }
+              : E[id],
+          o = (v, l, s) =>
+            `<option value="${v}" ${s == v ? "selected" : ""}>${l}</option>`;
+        return `<header><h2 style="flex:1;font-size:18px">${id == null ? "Add employee" : "Edit employee"}</h2><button class="ibtn" onclick="closeDr()" aria-label="Close">${ic("x")}</button></header><div class="bd">
+<label class="f">Full name<input id="fn" value="${esc(e.name)}"><span class="err" id="fne" hidden>Enter the employee’s name.</span></label><label class="f">Email<input id="fe" value="${esc(e.email)}"><span class="err" id="fee" hidden>Enter a valid email, for example name@company.kz.</span></label>
+<label class="f">Role<select id="fr">${["Employee", "Manager", "Administrator"].map((r) => o(r, r, e.role)).join("")}</select></label><label class="f">Workplace<select id="fw">${WP.map((w, i) => o(i, w.name, e.wp)).join("")}</select></label><label class="f">Schedule<select id="fs">${SCH.map((w, i) => o(i, w.name, e.sch)).join("")}</select></label>
+<label class="f">${id == null ? "Temporary password" : "New password (optional)"}<span class="fl" style="gap:8px"><input id="fp" style="margin:4px 0 0" value="${id == null ? "Temp" + Math.floor(1000 + Math.random() * 9000) : ""}"><button type="button" class="b" style="margin-top:4px" onclick="$('#fp').value='Temp'+Math.floor(1000+Math.random()*9000)">Generate</button></span><span class="err" id="fpe" hidden>Use at least 6 characters.</span></label></div>
+<footer><button class="b" onclick="closeDr()">Cancel</button><button class="b p" onclick="saveEmp(${id})">${id == null ? "Add employee" : "Save changes"}</button></footer>`;
+      }
+      const openRec = (id) => {
+        if (!id) return toast("This employee has not checked in yet");
+        S.dr = { t: "rec", id };
+        render();
+      };
+      const openEmp = (id) => {
+          S.dr = { t: "emp", id };
+          render();
+        },
+        closeDr = () => {
+          S.dr = null;
+          render();
+        };
+      function drawer() {
+        if (!S.dr) return "";
+        return `<div class="scr" onclick="closeDr()"></div><aside class="dr" role="dialog" aria-modal="true" style="padding:0;border-right:0">${S.dr.t == "rec" ? recDr(REC[S.dr.id - 1]) : empDr(S.dr.id)}</aside>`;
+      }
+      function ask(ev, k, id, a) {
+        ev.stopPropagation();
+        const b = ev.currentTarget.getBoundingClientRect();
+        S.pop = {
+          k,
+          id,
+          a,
+          x: Math.max(8, Math.min(b.left, innerWidth - 296)),
+          y: Math.min(b.bottom + 6, innerHeight - 220),
+        };
+        render();
+        $("#pcm").focus();
+      }
+      function popH() {
+        const p = S.pop;
+        if (!p) return "";
+        return `<div class="scr" style="background:none;z-index:51" onclick="S.pop=null;render()"></div><div class="pop" style="left:${p.x}px;top:${p.y}px"><b>${p.a == "A" ? "Approve" : "Reject"}</b><textarea id="pcm" style="margin:8px 0" placeholder="Comment (optional)"></textarea><div class="fl" style="justify-content:flex-end;gap:8px"><button class="b s" onclick="S.pop=null;render()">Cancel</button><button class="b s p" onclick="conf()">Confirm</button></div></div>`;
+      }
+      function conf() {
+        const p = S.pop,
+          c = $("#pcm").value.trim();
+        S.pop = null;
+        p.k == "rec" ? decide(p.id, p.a, c) : rdec(p.id, p.a, c);
+      }
+      function decide(id, a, cm) {
+        const r = REC[id - 1];
+        r.st = a == "A" ? "ACCEPTED" : "REJECTED";
+        r.marks.forEach((m) => {
+          if (m.st == "NEEDS_REVIEW") m.st = r.st;
+        });
+        r.dec = { by: ME, at: "21 Oct, " + NOW, cm, a };
+        toast(
+          `${a == "A" ? "Approved" : "Rejected"}: ${E[r.e].name}, ${dl(r.d)}`,
+        );
+        render();
+      }
+      function dDec(id, a) {
+        const c = $("#dcm").value.trim();
+        if (!c) {
+          $("#derr").hidden = false;
+          $("#dcm").focus();
+          return;
+        }
+        decide(id, a, c);
+      }
+      function rdec(id, a, cm) {
+        const q = REQ.find((x) => x.id == id);
+        q.st = a == "A" ? "APPROVED" : "REJECTED";
+        q.by = ME;
+        q.at = "21 Oct, " + NOW;
+        q.ac = cm;
+        toast(
+          `${a == "A" ? "Approved" : "Rejected"}: ${q.ty} for ${E[q.e].name}`,
+        );
+        render();
+      }
+      function closeS(id) {
+        const r = REC[id - 1];
+        r.out = mn(sch(r).e);
+        r.unc = 0;
+        r.marks.push({
+          type: "Check-out",
+          t: r.out,
+          st: "ACCEPTED",
+          dist: 0,
+          acc: 0,
+          lat: "—",
+          lng: "—",
+          srv: "closed by admin",
+        });
+        toast(`Session closed at ${sch(r).e}: ${E[r.e].name}`);
+        render();
+      }
+      function dismiss(id) {
+        REC[id - 1].pa.dismissed = 1;
+        toast("Possible absence dismissed");
+        render();
+      }
+      function activate(id) {
+        E[id].act = true;
+        toast(E[id].name + " activated");
+        render();
+      }
+      function saveEmp(id) {
+        const n = $("#fn").value.trim(),
+          m = $("#fe").value.trim(),
+          p = $("#fp").value;
+        let ok = 1;
+        $("#fne").hidden = !!n;
+        ok &= !!n;
+        const em =
+          /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(m) &&
+          !E.some((e) => e.email == m.toLowerCase() && e.id != id);
+        $("#fee").hidden = em;
+        ok &= em;
+        const pw = id == null ? p.length >= 6 : !p || p.length >= 6;
+        $("#fpe").hidden = pw;
+        ok &= pw;
+        if (!ok) return;
+        const d = {
+          name: n,
+          email: m.toLowerCase(),
+          role: $("#fr").value,
+          wp: +$("#fw").value,
+          sch: +$("#fs").value,
+          act: true,
+        };
+        if (id == null) {
+          d.id = E.length;
+          E.push(d);
+          toast("Employee added: " + n);
+        } else {
+          Object.assign(E[id], d);
+          toast("Changes saved");
+        }
+        S.dr = null;
+        render();
+      }
+      function modalH() {
+        if (S.modal == null) return "";
+        const e = E[S.modal];
+        return `<div class="scr" onclick="S.modal=null;render()"></div><div class="mdl" role="dialog" aria-modal="true"><h2 style="font-size:18px;margin-bottom:8px">Deactivate ${esc(e.name)}?</h2><p class="m">They will no longer be able to check in. Attendance history is kept.</p><div class="fl" style="justify-content:flex-end;margin-top:20px"><button class="b" onclick="S.modal=null;render()">Cancel</button><button class="b p" style="background:var(--er);border-color:var(--er)" onclick="e_=S.modal;E[e_].act=false;S.modal=null;toast('Deactivated: '+E[e_].name);render()">Deactivate</button></div></div>`;
+      }
+      let e_;
+      /* ---------- workplaces, schedules, settings handlers ---------- */
+      function rad(v) {
+        v = Math.max(20, Math.min(500, +v || 20));
+        $("#wr").value = v;
+        if (document.activeElement.id != "wrn") $("#wrn").value = v;
+        WP[S.wsel].r = v;
+        $("#map").innerHTML = mapIn(v);
+      }
+      function saveWp() {
+        const w = WP[S.wsel],
+          la = parseFloat($("#wla").value),
+          lo = parseFloat($("#wlo").value),
+          n = $("#wn").value.trim(),
+          e = $("#we"),
+          r = +$("#wrn").value;
+        if (
+          !n ||
+          isNaN(la) ||
+          isNaN(lo) ||
+          la < -90 ||
+          la > 90 ||
+          lo < -180 ||
+          lo > 180 ||
+          r < 20 ||
+          r > 500
+        ) {
+          e.textContent =
+            "Enter a name, latitude (-90 to 90), longitude (-180 to 180) and a radius of 20–500 m.";
+          e.hidden = false;
+          return;
+        }
+        Object.assign(w, {
+          name: n,
+          addr: $("#wa").value.trim(),
+          lat: la,
+          lng: lo,
+          r,
+          on: $("#won").checked,
+        });
+        toast("Workplace saved");
+        render();
+      }
+      function addWp() {
+        WP.push({
+          name: "New workplace",
+          addr: "",
+          lat: 51.1283,
+          lng: 71.4305,
+          r: 100,
+          on: 1,
+        });
+        S.wsel = WP.length - 1;
+        render();
+      }
+      function addSch() {
+        SCH.push({
+          name: "New schedule",
+          days: [1, 1, 1, 1, 1, 0, 0],
+          s: "09:00",
+          e: "18:00",
+          br: 60,
+          gr: ST.grace,
+        });
+        S.ssel = SCH.length - 1;
+        S.sd = null;
+        render();
+      }
+      function saveSch() {
+        const s = SCH[S.ssel],
+          n = $("#sn").value.trim(),
+          a = $("#ss").value,
+          b = $("#se").value,
+          x = $("#sx");
+        if (!n || !a || !b || b <= a || !S.sd.some(Boolean)) {
+          x.textContent =
+            "Enter a name, select at least one working day and set an end time after the start time.";
+          x.hidden = false;
+          return;
+        }
+        Object.assign(s, {
+          name: n,
+          days: S.sd.slice(),
+          s: a,
+          e: b,
+          br: +$("#sb").value || 0,
+          gr: +$("#sg").value || 0,
+        });
+        let mv = 0;
+        ens().forEach((e) => {
+          const c = $("#as" + e.id).checked;
+          if (c && e.sch != S.ssel) {
+            e.sch = S.ssel;
+            mv++;
+          } else if (!c && e.sch == S.ssel) {
+            e.sch = S.ssel ? 0 : SCH.length > 1 ? 1 : 0;
+            if (e.sch != S.ssel) mv++;
+          }
+        });
+        S.sd = null;
+        toast(
+          "Schedule saved" +
+            (mv ? ` · ${mv} assignment${mv > 1 ? "s" : ""} changed` : ""),
+        );
+        render();
+      }
+      function saveSet() {
+        const v = (id) => +$("#" + id).value,
+          x = $("#xe");
+        if (v("xj") < v("xi") || v("xn") < 1 || v("xa") < 1) {
+          x.textContent =
+            "Check the values: the interval end must not be below its start, and numbers must be at least 1.";
+          x.hidden = false;
+          return;
+        }
+        Object.assign(ST, {
+          grace: v("xg"),
+          acc: v("xa"),
+          ot: v("xo"),
+          pres: $("#xp").checked,
+          imin: v("xi"),
+          imax: v("xj"),
+          n: v("xn"),
+          remote: $("#xr").checked,
+        });
+        toast("Settings saved");
+        render();
+      }
+      /* ---------- shell ---------- */
+      const loginH = () =>
+        `<div class="lg"><div class="c"><div class="brand" style="padding:0 0 16px"><div class="logo">${ic("pin", 20)}</div><b style="font-size:20px">WorkTrack</b></div><h2 style="font-size:18px;margin-bottom:16px">Administrator sign in</h2><label class="f">Email<input id="le" type="email" value="marat.seitov@nomad.kz"></label><label class="f">Password<input id="lp" type="password" placeholder="Demo password: demo"></label><p class="err" id="lr" hidden>Wrong email or password. The demo password is “demo”.</p><button class="b p" style="width:100%;justify-content:center;min-height:44px" onclick="login()">Log in</button></div></div>`;
+      function login() {
+        if ($("#lp").value == "demo" && $("#le").value.includes("@")) {
+          S.user = 1;
+          render();
+        } else $("#lr").hidden = false;
+      }
+      function render() {
+        const m = $("#main"),
+          sc = m ? m.scrollTop : 0;
+        if (!S.user) {
+          $("#root").innerHTML = loginH();
+          return;
+        }
+        const P = { dash, att, emp, wp, sch: sch_, req: reqs, rep, set }[
+            S.page
+          ],
+          n = pend(),
+          a = items().length;
+        $("#root").innerHTML =
+          `<div id="shell"><aside><div class="brand"><div class="logo">${ic("pin", 20)}</div><b style="font-size:18px">WorkTrack</b></div><div class="org">Nomad Logistics LLP</div><nav>${NV.map((v) => `<button class="${S.page == v[0] ? "on" : ""}" onclick="go('${v[0]}')">${ic(v[1], 20)}${TG[v[0]][0]}${v[0] == "req" && n ? `<span class="badge">${n}</span>` : ""}</button>`).join("")}</nav></aside>
+<div class="col"><div class="top"><div class="ti"><h1>${TG[S.page][0]}</h1><div class="tag">${TG[S.page][1]}</div></div><div class="sr">${ic("search", 18)}<input id="gs" placeholder="Search employees" aria-label="Global search" onkeydown="if(event.key=='Enter'){S.eq=this.value;go('emp')}"></div>
+<button class="ibtn" aria-label="Notifications" onclick="go('dash')">${ic("bell", 20)}${a ? `<i>${a}</i>` : ""}</button><div class="am"><button class="av" onclick="S.menu=!S.menu;render()" aria-label="Account menu">MS</button>${S.menu ? `<div class="menu"><div style="padding:8px"><b>${ME}</b><div class="sm m">HR administrator</div></div><button onclick="S.user=0;S.menu=0;render()">${ic("out", 16)}Log out</button></div>` : ""}</div></div>
+<div id="main">${P()}</div></div></div>${drawer()}${popH()}${modalH()}`;
+        const mm = $("#main");
+        if (mm) mm.scrollTop = sc;
+      }
+      document.addEventListener("click", (e) => {
+        if (S.menu && !e.target.closest(".am")) {
+          S.menu = 0;
+          render();
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key == "Escape" && (S.dr || S.pop || S.modal != null)) {
+          S.dr = S.pop = null;
+          S.modal = null;
+          render();
+        }
+        if (e.key == "Enter" && !S.user && e.target.id == "lp") login();
+      });
+      render();
+    </script>
+  </body>
+</html>

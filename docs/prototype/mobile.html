@@ -1,0 +1,1458 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>WorkTrack – Employee app prototype</title>
+    <style>
+      :root {
+        --p: #2457d6;
+        --pc: #e3ebff;
+        --bg: #f6f8fc;
+        --s: #fff;
+        --t: #1b2430;
+        --m: #5b6676;
+        --b: #e3e8f0;
+        --ok: #16a34a;
+        --okb: #e7f6ec;
+        --wn: #b45309;
+        --wnb: #fef3c7;
+        --er: #dc2626;
+        --erb: #fdecec;
+        --nn: #64748b;
+        --nnb: #eef1f5;
+        --sh:
+          0 1px 2px rgba(27, 36, 48, 0.06), 0 4px 14px rgba(27, 36, 48, 0.05);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        background: #e6ebf4;
+        font-family:
+          Inter,
+          Roboto,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        color: var(--t);
+        -webkit-font-smoothing: antialiased;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        border: 0;
+        background: none;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          background 0.2s,
+          opacity 0.2s;
+      }
+      button:active {
+        transform: scale(0.97);
+      }
+      :focus-visible {
+        outline: 3px solid var(--p);
+        outline-offset: 2px;
+      }
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+      #wrap {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+      @media (max-height: 940px) {
+        #wrap {
+          zoom: 0.86;
+        }
+      }
+      #phone {
+        position: relative;
+        width: 390px;
+        height: 844px;
+        border: 10px solid #1b2430;
+        border-radius: 48px;
+        background: var(--bg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 24px 60px rgba(27, 36, 48, 0.25);
+      }
+      .sb {
+        height: 36px;
+        flex: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 26px 0;
+        font-size: 13px;
+        font-weight: 600;
+        background: var(--bg);
+      }
+      #app {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .view {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 16px 24px;
+        overscroll-behavior: contain;
+      }
+      .m {
+        color: var(--m);
+      }
+      .card {
+        background: var(--s);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: var(--sh);
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+      }
+      h2 {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      h3 {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+      .sm {
+        font-size: 13px;
+      }
+      .hd {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 16px;
+      }
+      .hd h1 {
+        flex: 1;
+      }
+      .ib {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        flex: none;
+      }
+      .ib:hover {
+        background: var(--nnb);
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .ok {
+        color: var(--ok);
+        background: var(--okb);
+      }
+      .wn {
+        color: var(--wn);
+        background: var(--wnb);
+      }
+      .er {
+        color: var(--er);
+        background: var(--erb);
+      }
+      .nn {
+        color: var(--nn);
+        background: var(--nnb);
+      }
+      .in {
+        color: var(--p);
+        background: var(--pc);
+      }
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        min-height: 52px;
+        border-radius: 999px;
+        background: var(--p);
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+        margin-top: 8px;
+        box-shadow: 0 2px 8px rgba(36, 87, 214, 0.3);
+      }
+      .btn:hover {
+        background: #1d49b8;
+      }
+      .btn:disabled {
+        opacity: 0.7;
+        cursor: default;
+      }
+      .btn.sec {
+        background: var(--pc);
+        color: var(--p);
+        box-shadow: none;
+      }
+      .btn.sec:hover {
+        background: #d3dfff;
+      }
+      .btn.big {
+        min-height: 68px;
+        font-size: 20px;
+      }
+      .btn.out {
+        background: #1b2430;
+        box-shadow: 0 2px 8px rgba(27, 36, 48, 0.3);
+      }
+      .spin {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: sp 0.8s linear infinite;
+      }
+      @keyframes sp {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .hero {
+        padding: 20px;
+      }
+      .timer {
+        font-size: 40px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -1px;
+        margin: 4px 0 12px;
+      }
+      .ln {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--m);
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .big2 {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 16px;
+      }
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .ql {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 56px;
+        padding: 0 16px;
+        background: var(--s);
+        border-radius: 16px;
+        box-shadow: var(--sh);
+        font-weight: 600;
+        color: var(--p);
+      }
+      .ql:hover {
+        background: var(--pc);
+      }
+      .tl {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .tl li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 40px;
+        font-size: 14px;
+        border-left: 2px solid var(--b);
+        margin-left: 5px;
+        padding-left: 12px;
+        position: relative;
+      }
+      .tl .dot {
+        position: absolute;
+        left: -7px;
+      }
+      .tl li span {
+        flex: 1;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .dot.ok {
+        background: var(--ok);
+      }
+      .dot.wn {
+        background: var(--wn);
+      }
+      .dot.er {
+        background: var(--er);
+      }
+      .dot.nn {
+        background: var(--nn);
+      }
+      .bar {
+        height: 8px;
+        border-radius: 99px;
+        background: var(--nnb);
+        margin-top: 8px;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        border-radius: 99px;
+        background: var(--p);
+        transition: width 0.4s;
+      }
+      .nav {
+        flex: none;
+        display: flex;
+        background: var(--s);
+        border-top: 1px solid var(--b);
+        padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+      }
+      .nav button {
+        flex: 1;
+        min-height: 52px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        font-size: 12px;
+        color: var(--m);
+        font-weight: 500;
+      }
+      .nav .ic {
+        width: 56px;
+        height: 28px;
+        border-radius: 99px;
+        display: grid;
+        place-items: center;
+        transition: background 0.2s;
+      }
+      .nav .on {
+        color: var(--p);
+        font-weight: 700;
+      }
+      .nav .on .ic {
+        background: var(--pc);
+      }
+      .scrim {
+        position: absolute;
+        inset: 0;
+        background: rgba(27, 36, 48, 0.45);
+        display: flex;
+        align-items: flex-end;
+        z-index: 20;
+        animation: fd 0.2s;
+      }
+      .scrim.mid {
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      @keyframes fd {
+        from {
+          opacity: 0;
+        }
+      }
+      @keyframes up {
+        from {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+      }
+      .sheet {
+        width: 100%;
+        background: var(--s);
+        border-radius: 24px 24px 0 0;
+        padding: 24px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+        text-align: center;
+        animation: up 0.22s ease-out;
+      }
+      .sheet p,
+      .dlg p {
+        color: var(--m);
+        margin: 8px 0 8px;
+        line-height: 1.45;
+        font-size: 15px;
+      }
+      .dlg {
+        width: 100%;
+        background: var(--s);
+        border-radius: 24px;
+        padding: 24px 20px;
+        text-align: center;
+        animation: up 0.22s ease-out;
+      }
+      .cd {
+        font-size: 36px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        margin-top: 8px;
+      }
+      .sum {
+        text-align: left;
+        margin: 12px 0;
+        border-top: 1px solid var(--b);
+      }
+      .sum div {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--b);
+        font-size: 15px;
+      }
+      .errt {
+        color: var(--er);
+        font-size: 14px;
+        margin: 8px 0;
+      }
+      .lg {
+        padding: 40px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .logo {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        background: var(--p);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        margin-bottom: 8px;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--m);
+        margin-top: 8px;
+      }
+      input,
+      select,
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 52px;
+        margin-top: 6px;
+        padding: 0 14px;
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        font: inherit;
+        font-size: 16px;
+        color: var(--t);
+        background: var(--s);
+        transition: border-color 0.2s;
+      }
+      textarea {
+        padding: 12px 14px;
+        min-height: 96px;
+        resize: none;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--p);
+      }
+      .pw {
+        position: relative;
+        display: block;
+      }
+      .pw input {
+        padding-right: 52px;
+      }
+      .pw .ib {
+        position: absolute;
+        right: 2px;
+        top: 6px;
+        height: 52px;
+      }
+      .wsel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .wsel button:disabled {
+        opacity: 0.3;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .stat {
+        background: var(--s);
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: var(--sh);
+      }
+      .stat b {
+        display: block;
+        font-size: 18px;
+        margin-top: 2px;
+      }
+      .day {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: var(--s);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: var(--sh);
+        margin-bottom: 12px;
+      }
+      .day:hover {
+        background: #fbfcfe;
+      }
+      .fl {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .mk {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--b);
+        font-size: 14px;
+        flex-wrap: wrap;
+      }
+      .mk:last-child {
+        border: 0;
+      }
+      .sd {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 60px;
+        padding: 8px 14px;
+        border-radius: 14px;
+        margin-bottom: 8px;
+        background: var(--s);
+        box-shadow: var(--sh);
+      }
+      .sd.today {
+        background: var(--pc);
+        box-shadow: none;
+      }
+      .sd.off {
+        opacity: 0.55;
+      }
+      .fab {
+        position: absolute;
+        right: 16px;
+        bottom: 84px;
+        min-height: 56px;
+        padding: 0 20px;
+        border-radius: 999px;
+        background: var(--p);
+        color: #fff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 6px 16px rgba(36, 87, 214, 0.4);
+        z-index: 5;
+      }
+      .fab:hover {
+        background: #1d49b8;
+      }
+      .sw {
+        width: 48px;
+        height: 28px;
+        border-radius: 99px;
+        background: var(--b);
+        position: relative;
+        flex: none;
+      }
+      .sw i {
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      }
+      #toast {
+        position: absolute;
+        left: 50%;
+        bottom: 90px;
+        transform: translate(-50%, 20px);
+        background: #1b2430;
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-size: 14px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.2s;
+        z-index: 40;
+        white-space: nowrap;
+      }
+      #toast.on {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      #demo {
+        width: 290px;
+        background: var(--s);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: var(--sh);
+      }
+      #demo button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 12px 14px;
+        margin-top: 8px;
+        border: 1px solid var(--b);
+        border-radius: 12px;
+        font-size: 14px;
+        min-height: 48px;
+      }
+      #demo button:hover {
+        background: var(--nnb);
+      }
+      #demo button.sel {
+        border-color: var(--p);
+        background: var(--pc);
+        font-weight: 600;
+      }
+      #demo hr {
+        border: 0;
+        border-top: 1px solid var(--b);
+        margin: 16px 0 8px;
+      }
+      #tag {
+        margin-top: 16px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: var(--nnb);
+        font-size: 12px;
+        color: var(--m);
+      }
+      @media (max-width: 500px) {
+        body {
+          display: block;
+          min-height: 100dvh;
+        }
+        #wrap {
+          display: block;
+          zoom: 1;
+        }
+        #phone {
+          width: 100%;
+          height: 100dvh;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+        }
+        .sb,
+        #demo {
+          display: none;
+        }
+        .fab {
+          bottom: 88px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="phone">
+        <div class="sb">
+          <b id="clk">09:41</b
+          ><span
+            style="
+              display: flex;
+              gap: 6px;
+              align-items: center;
+              font-size: 12px;
+            "
+            >5G
+            <svg width="26" height="14" viewBox="0 0 26 14" fill="none">
+              <rect
+                x=".5"
+                y=".5"
+                width="22"
+                height="13"
+                rx="3.5"
+                stroke="#1B2430"
+              />
+              <rect
+                x="2.5"
+                y="2.5"
+                width="15"
+                height="9"
+                rx="2"
+                fill="#1B2430"
+              />
+              <rect
+                x="24"
+                y="4.5"
+                width="2"
+                height="5"
+                rx="1"
+                fill="#1B2430"
+              /></svg
+          ></span>
+        </div>
+        <div id="app"></div>
+        <div id="toast" role="status"></div>
+      </div>
+      <aside id="demo">
+        <h3>Demo controls</h3>
+        <p class="m sm">GPS scenario for the next check-in / out</p>
+        <button data-sc="1" onclick="setSc(1)">
+          1) Inside geofence, good accuracy (8 m)
+        </button>
+        <button data-sc="2" onclick="setSc(2)">
+          2) Inside geofence, poor accuracy (85 m) → NEEDS_REVIEW
+        </button>
+        <button data-sc="3" onclick="setSc(3)">
+          3) Outside geofence (240 m) → REJECTED
+        </button>
+        <button data-sc="4" onclick="setSc(4)">
+          4) GPS off / no signal → error
+        </button>
+        <hr />
+        <button onclick="openPresence()">Trigger presence check</button>
+        <button onclick="resetDemo()">Reset demo</button>
+        <div id="tag"></div>
+      </aside>
+    </div>
+    <script>
+      const I = {
+        home: "M3 11l9-8 9 8M5 10v10h14V10",
+        clock: "M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2",
+        list: "M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01",
+        user: "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0",
+        bell: "M6 16v-5a6 6 0 0112 0v5l2 2H4zM10 21h4",
+        pin: "M12 21s7-6 7-12a7 7 0 10-14 0c0 6 7 12 7 12zM12 11a2 2 0 100-4 2 2 0 000 4z",
+        pinoff: "M12 21s7-6 7-12a7 7 0 10-14 0c0 6 7 12 7 12zM3 3l18 18",
+        cal: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
+        plus: "M12 5v14M5 12h14",
+        back: "M15 5l-7 7 7 7",
+        chev: "M9 5l7 7-7 7",
+        eye: "M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 15a3 3 0 100-6 3 3 0 000 6z",
+        check: "M5 12l4 4 10-10",
+        x: "M6 6l12 12M18 6L6 18",
+        alert: "M12 3l10 18H2zM12 10v4M12 17.5h.01",
+        dash: "M7 12h10",
+        out: "M9 4H5v16h4M16 8l4 4-4 4M20 12H9",
+        fp: "M12 11v4M8 13a4 4 0 018 0v2M5 13a7 7 0 0114 0v2",
+      };
+      const $ = (s) => document.querySelector(s),
+        pad = (n) => String(n).padStart(2, "0");
+      const ic = (n, s = 20) =>
+        `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${I[n]}"/></svg>`;
+      const CI = { ok: "check", wn: "alert", er: "x", nn: "dash", in: "plus" };
+      const chip = (k, t) =>
+        `<span class="chip ${k}">${ic(CI[k], 14)}${t}</span>`;
+      const hm = () => {
+        const d = new Date();
+        return pad(d.getHours()) + ":" + pad(d.getMinutes());
+      };
+      const mins = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+      const fm = (m) => `${Math.floor(m / 60)}h ${pad(Math.round(m % 60))}m`;
+      const fmt = (ms) => {
+        const s = Math.floor(ms / 1000);
+        return (
+          pad(Math.floor(s / 3600)) +
+          ":" +
+          pad(Math.floor(s / 60) % 60) +
+          ":" +
+          pad(s % 60)
+        );
+      };
+      const SC = {
+        1: { acc: 8, dist: 35, zone: 1, k: "ok" },
+        2: { acc: 85, dist: 40, zone: 1, k: "wn" },
+        3: { acc: 10, dist: 240, zone: 0, k: "er" },
+        4: { off: 1 },
+      };
+      const STK = {
+        CONFIRMED: "ok",
+        UNCONFIRMED: "wn",
+        "POSSIBLE ABSENCE": "er",
+        "NO RESPONSE": "nn",
+        "ON BREAK": "nn",
+      };
+      const MST = { ok: "Accepted", wn: "Needs review", er: "Rejected" };
+      const D = (d, i, o, w, c, m, k, cp) => ({ d, i, o, w, c, m, k, cp });
+      const LAST = [
+        D(
+          "Mon, 12 Oct",
+          "09:01",
+          "18:03",
+          482,
+          [["ok", "On time"]],
+          [
+            ["09:01", "Check-in", "ok", "inside zone, accuracy 8 m"],
+            ["18:03", "Check-out", "ok", "inside zone, accuracy 11 m"],
+          ],
+          [
+            ["10:42", "CONFIRMED"],
+            ["15:27", "CONFIRMED"],
+          ],
+          "7h 55m",
+        ),
+        D(
+          "Tue, 13 Oct",
+          "09:14",
+          "18:05",
+          471,
+          [["wn", "Late 14 min"]],
+          [
+            ["09:14", "Check-in", "ok", "inside zone, accuracy 9 m"],
+            ["18:05", "Check-out", "ok", "inside zone, accuracy 7 m"],
+          ],
+          [
+            ["11:05", "CONFIRMED"],
+            ["15:50", "NO RESPONSE"],
+          ],
+          "7h 30m",
+        ),
+        D(
+          "Wed, 14 Oct",
+          "09:03",
+          "18:01",
+          478,
+          [
+            ["ok", "On time"],
+            ["wn", "Needs review"],
+          ],
+          [
+            [
+              "09:03",
+              "Check-in",
+              "wn",
+              "inside zone, accuracy 85 m, sent for review",
+            ],
+            ["18:01", "Check-out", "ok", "inside zone, accuracy 10 m"],
+          ],
+          [
+            ["10:15", "CONFIRMED"],
+            ["14:30", "UNCONFIRMED"],
+          ],
+          "7h 20m",
+        ),
+        D(
+          "Thu, 15 Oct",
+          "09:21",
+          "18:02",
+          461,
+          [
+            ["er", "Rejected"],
+            ["wn", "Late 21 min"],
+          ],
+          [
+            ["09:04", "Check-in", "er", "outside zone, 240 m, rejected"],
+            ["09:21", "Check-in", "ok", "inside zone, accuracy 10 m"],
+            ["18:02", "Check-out", "ok", "inside zone, accuracy 8 m"],
+          ],
+          [["11:40", "POSSIBLE ABSENCE"]],
+          "7h 05m",
+        ),
+        D(
+          "Fri, 16 Oct",
+          "08:58",
+          "18:40",
+          522,
+          [
+            ["ok", "On time"],
+            ["in", "Overtime 40 min"],
+          ],
+          [
+            ["08:58", "Check-in", "ok", "inside zone, accuracy 6 m"],
+            ["18:40", "Check-out", "ok", "inside zone, accuracy 9 m"],
+          ],
+          [
+            ["10:30", "CONFIRMED"],
+            ["16:10", "CONFIRMED"],
+          ],
+          "8h 35m",
+        ),
+      ].reverse();
+      const THIS = [
+        D(
+          "Tue, 20 Oct",
+          "09:12",
+          "18:00",
+          468,
+          [["wn", "Late 12 min"]],
+          [
+            ["09:12", "Check-in", "ok", "inside zone, accuracy 8 m"],
+            ["18:00", "Check-out", "ok", "inside zone, accuracy 8 m"],
+          ],
+          [
+            ["10:50", "CONFIRMED"],
+            ["15:20", "CONFIRMED"],
+          ],
+          "7h 40m",
+        ),
+        D(
+          "Mon, 19 Oct",
+          "09:00",
+          "17:35",
+          455,
+          [
+            ["ok", "On time"],
+            ["wn", "Early leaving 25 min"],
+          ],
+          [
+            ["09:00", "Check-in", "ok", "inside zone, accuracy 7 m"],
+            ["17:35", "Check-out", "ok", "inside zone, accuracy 12 m"],
+          ],
+          [
+            ["10:35", "CONFIRMED"],
+            ["14:55", "CONFIRMED"],
+          ],
+          "7h 30m",
+        ),
+      ];
+      const BASE = 923;
+      let S,
+        tm = {};
+      function init() {
+        S = {
+          user: 0,
+          tab: "home",
+          ov: null,
+          sc: 1,
+          sess: null,
+          tl: [],
+          pending: null,
+          busy: 0,
+          loc: "wait",
+          hw: 0,
+          dp: 0,
+          todayMs: 0,
+          autoDone: 0,
+          pc: null,
+          sheet: null,
+          nt: null,
+          reqs: [
+            {
+              ty: "Remote work",
+              dr: "23 Oct",
+              st: "nn",
+              stt: "Pending",
+              cm: "Waiting for administrator",
+            },
+            {
+              ty: "Vacation",
+              dr: "26 – 30 Oct",
+              st: "ok",
+              stt: "Approved",
+              cm: "Approved. Enjoy your break!",
+            },
+            {
+              ty: "Schedule change",
+              dr: "15 Oct",
+              st: "er",
+              stt: "Rejected",
+              cm: "Admin: shift swaps are not possible during audit week.",
+            },
+            {
+              ty: "Absence",
+              dr: "2 Oct",
+              st: "ok",
+              stt: "Approved",
+              cm: "Approved.",
+            },
+          ],
+        };
+      }
+      const live = () => S.todayMs + (S.sess ? Date.now() - S.sess.ms : 0);
+      function today() {
+        const m = S.tl.filter((x) => x.kind == "mark");
+        if (!m.length) return null;
+        const ins = m.filter((x) => x.label == "Check-in" && x.k != "er"),
+          outs = m.filter((x) => x.label == "Check-out"),
+          c = [];
+        if (ins[0])
+          c.push(
+            mins(ins[0].t) > 540
+              ? ["wn", "Late " + (mins(ins[0].t) - 540) + " min"]
+              : ["ok", "On time"],
+          );
+        if (m.some((x) => x.k == "wn")) c.push(["wn", "Needs review"]);
+        if (m.some((x) => x.k == "er")) c.push(["er", "Rejected"]);
+        if (S.sess) c.push(["in", "In progress"]);
+        return D(
+          "Today, Wed 21 Oct",
+          ins[0] ? ins[0].t : "—",
+          outs.length && !S.sess ? outs[outs.length - 1].t : "—",
+          Math.floor(live() / 60000),
+          c,
+          m.map((x) => [x.t, x.label, x.k, x.txt]),
+          S.tl.filter((x) => x.kind == "check").map((x) => [x.t, x.st]),
+          "—",
+        );
+      }
+      const wk = (i) => {
+        if (i) return LAST;
+        const t = today();
+        return t ? [t, ...THIS] : THIS;
+      };
+      /* ---------- views ---------- */
+      const login =
+        () => `<div class="lg"><div class="logo">${ic("pin", 32)}</div><h1>WorkTrack</h1><p class="m">Attendance and working time</p>
+<label>Email<input id="em" type="email" value="aigerim@nomad.kz" autocomplete="off"></label>
+<label>Password<span class="pw"><input id="pw" type="password" placeholder="Demo password: demo"><button class="ib" onclick="tpw()" aria-label="Show or hide password">${ic("eye")}</button></span></label>
+<p class="errt" id="le" hidden>Wrong email or password. Check them and try again.</p>
+<button class="btn" onclick="doLogin()">Log in</button></div>`;
+      function home() {
+        const o = !!S.sess,
+          sc = SC[S.sc];
+        const lc =
+          S.loc == "wait"
+            ? chip("nn", "Locating…")
+            : sc.off
+              ? chip("nn", "Location off")
+              : sc.zone
+                ? chip(sc.k, `Inside work zone · ±${sc.acc} m`)
+                : chip("er", `Outside work zone · ${sc.dist} m`);
+        const h = new Date().getHours(),
+          g =
+            h < 12
+              ? "Good morning"
+              : h < 18
+                ? "Good afternoon"
+                : "Good evening",
+          tot = BASE + Math.floor(live() / 60000);
+        const tl = S.tl.length
+          ? `<ul class="tl">${S.tl.map((x) => `<li><i class="dot ${x.k}"></i><span>${x.label}</span>${chip(x.k, x.kind == "mark" ? MST[x.k] : x.st)}<b>${x.t}</b></li>`).join("")}</ul>`
+          : '<p class="m sm">No marks yet. Tap “Check in” to start your day.</p>';
+        return `<div class="hd"><div style="flex:1"><h1>${g}, Aigerim</h1><p class="m sm">Nomad Logistics LLP</p></div><button class="ib" onclick="toast('No new notifications')" aria-label="Notifications">${ic("bell", 24)}</button></div>
+<div class="card hero"><p class="m sm">${o ? "Working since " + S.sess.t : "Not checked in"}</p><div class="timer" id="tm">${fmt(o ? Date.now() - S.sess.ms : 0)}</div>
+<div class="ln">${ic("pin", 18)}HQ Office, Astana</div><div class="ln">${ic("cal", 18)}09:00 – 18:00, break 13:00–14:00</div><div style="margin-top:12px">${lc}</div></div>
+${S.pending ? `<div class="card" style="background:var(--nnb);box-shadow:none"><p class="sm"><b>Your ${S.pending} is saved.</b> It will be sent as soon as location is available.</p></div>` : ""}
+<button class="btn big ${o ? "out" : ""}" onclick="act()" ${S.busy ? "disabled" : ""}>${S.busy ? '<span class="spin"></span>Locating…' : S.pending ? "Try again" : o ? "Check out" : "Check in"}</button>
+<div class="row2" style="margin-top:16px"><button class="ql" onclick="S.ov='sched';render()">${ic("cal")}My schedule</button><button class="ql" onclick="S.nt=null;S.ov='new';render()">${ic("plus")}New request</button></div>
+<div class="card"><h3>Today</h3>${tl}</div>
+<div class="card"><div class="fl"><h3 style="margin:0">This week</h3><b>${fm(tot)} / 40h</b></div><div class="bar"><i style="width:${Math.min(100, tot / 24)}%"></i></div></div>`;
+      }
+      function history() {
+        const d = wk(S.hw),
+          sum = d.reduce((a, x) => a + x.w, 0),
+          late = d.filter((x) => x.c.some((c) => /^Late/.test(c[1]))).length,
+          ear = d.filter((x) => x.c.some((c) => /^Early/.test(c[1]))).length;
+        return `<h1 style="margin-bottom:12px">History</h1><div class="wsel"><button class="ib" ${S.hw ? "" : "disabled"} onclick="S.hw=0;render()" aria-label="Next week">${ic("chev")}</button><b>${S.hw ? "12 – 18 Oct 2026" : "19 – 25 Oct 2026"}</b><button class="ib" ${S.hw ? "disabled" : ""} onclick="S.hw=1;render()" aria-label="Previous week">${ic("back")}</button></div>
+<div class="stats"><div class="stat"><span class="m sm">Worked</span><b>${fm(sum)}</b></div><div class="stat"><span class="m sm">Late</span><b>${late}</b></div><div class="stat"><span class="m sm">Early leaving</span><b>${ear}</b></div></div>
+${d.map((x, i) => `<button class="day" onclick="S.dp=${i};S.ov='day';render()"><div class="fl"><b>${x.d}</b><b>${fm(x.w)}</b></div><div class="m sm" style="margin-top:4px">${x.i} – ${x.o}</div><div class="chips">${x.c.map((c) => chip(c[0], c[1])).join("")}</div></button>`).join("")}`;
+      }
+      const hdr = (t) =>
+        `<div class="hd"><button class="ib" onclick="S.ov=null;render()" aria-label="Back">${ic("back")}</button><h1>${t}</h1></div>`;
+      function dayv() {
+        const x = wk(S.hw)[S.dp];
+        return (
+          hdr(x.d) +
+          `<div class="chips" style="margin:0 0 16px">${x.c.map((c) => chip(c[0], c[1])).join("")}</div>
+<div class="card"><h3>Marks</h3>${x.m.map((m) => `<div class="mk"><b>${m[0]}</b><span>${m[1]}</span>${chip(m[2], MST[m[2]])}<span class="m sm" style="flex-basis:100%">${m[3]}</span></div>`).join("")}</div>
+<div class="card"><h3>Presence checks</h3>${x.k.length ? x.k.map((k) => `<div class="mk"><b>${k[0]}</b><span style="flex:1">Presence check</span>${chip(STK[k[1]], k[1])}</div>`).join("") : '<p class="m sm">No presence checks.</p>'}
+${x.k.some((k) => k[1] == "NO RESPONSE") ? '<p class="m sm" style="margin-top:8px">“No response” is not a violation.</p>' : ""}</div>
+<div class="card" style="background:var(--pc);box-shadow:none"><p class="sm">Registered interval ${x.i}–${x.o}; confirmed presence ${x.cp}</p></div>`
+        );
+      }
+      function sched() {
+        const R = [
+          ["Mon 19", "09:00 – 18:00"],
+          ["Tue 20", "09:00 – 18:00"],
+          ["Wed 21", "09:00 – 18:00"],
+          ["Thu 22", "09:00 – 18:00"],
+          ["Fri 23", "09:00 – 17:00"],
+          ["Sat 24", ""],
+          ["Sun 25", ""],
+        ];
+        return (
+          hdr("My schedule") +
+          `<p class="m sm" style="margin:-8px 0 12px">Week 19 – 25 Oct 2026 · HQ Office, Astana</p>` +
+          R.map(
+            (r, i) =>
+              `<div class="sd ${i == 2 ? "today" : ""} ${r[1] ? "" : "off"}"><div><b>${r[0]}</b>${i == 2 ? ' <span class="chip in">Today</span>' : ""}</div><div style="text-align:right">${r[1] ? `<b>${r[1]}</b><div class="m sm">${i == 4 ? "break 13:00–13:45" : "break 13:00–14:00"}</div>` : '<span class="m">Day off</span>'}</div></div>`,
+          ).join("")
+        );
+      }
+      function reqs() {
+        return `<h1 style="margin-bottom:16px">Requests</h1>${S.reqs.map((r) => `<div class="card"><div class="fl"><b>${r.ty}</b>${chip(r.st, r.stt)}</div><p class="m sm" style="margin-top:4px">${r.dr}</p>${r.cm ? `<p class="sm" style="margin-top:8px">${r.cm}</p>` : ""}</div>`).join("")}<div style="height:64px"></div><button class="fab" onclick="S.nt=null;S.ov='new';render()">${ic("plus")}New request</button>`;
+      }
+      function newreq() {
+        const T = ["Vacation", "Absence", "Remote work", "Schedule change"],
+          d = new Date().toISOString().slice(0, 10);
+        return (
+          hdr("New request") +
+          `<label>Type<select id="rt">${T.map((t) => `<option ${t == S.nt ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+<label>From<input id="rf" type="date" value="${d}"></label><label>To<input id="rto" type="date" value="${d}"></label>
+<label>Comment<textarea id="rc" placeholder="Add details for your administrator"></textarea></label>
+<p class="errt" id="re" hidden>The end date must not be before the start date.</p><button class="btn" onclick="submitReq()">Submit</button>`
+        );
+      }
+      function profile() {
+        return `<h1 style="margin-bottom:16px">Profile</h1><div class="card"><div class="fl" style="justify-content:flex-start;gap:16px"><div class="logo" style="margin:0;border-radius:50%">${ic("user", 32)}</div><div><h2>Aigerim Sadykova</h2><p class="m sm">Software Engineer</p></div></div></div>
+<div class="card"><p class="m sm">Organization</p><b>Nomad Logistics LLP</b><p class="m sm" style="margin-top:12px">Assigned workplace</p><b>HQ Office</b><p class="sm">12 Dostyk Ave, Astana · radius 100 m</p><p class="m sm" style="margin-top:12px">Schedule</p><b>Mon – Fri, 09:00 – 18:00</b><p class="sm">Break 13:00 – 14:00</p></div>
+<div class="card" style="opacity:.6"><div class="fl"><div>${ic("fp")} <b>Confirm check-in with fingerprint / face</b><p class="m sm">Device biometrics</p></div><div class="sw" aria-disabled="true"><i></i></div></div>${chip("nn", "Coming soon")}</div>
+<button class="btn sec" onclick="logout()">${ic("out")}Log out</button>`;
+      }
+      const nav = () =>
+        `<nav class="nav">${[
+          ["home", "Home", "home"],
+          ["history", "History", "clock"],
+          ["requests", "Requests", "list"],
+          ["profile", "Profile", "user"],
+        ]
+          .map(
+            (t) =>
+              `<button class="${S.tab == t[0] && !S.ov ? "on" : ""}" onclick="S.tab='${t[0]}';S.ov=null;render()"><span class="ic">${ic(t[2])}</span>${t[1]}</button>`,
+          )
+          .join("")}</nav>`;
+      function pcH() {
+        const p = S.pc;
+        return `<div class="scrim mid"><div class="dlg" role="dialog" aria-modal="true"><div class="big2 in">${ic("pin", 32)}</div><h2>Presence check</h2><p>Are you at your workplace?</p>
+${
+  p.res
+    ? `<div style="margin:12px 0">${chip(STK[p.res], p.res)}</div>`
+    : `<div class="cd" id="pcc">${pad(Math.floor(p.left / 60))}:${pad(p.left % 60)}</div><p class="sm">Time left to respond</p>${p.err ? '<p class="errt">Location is unavailable. Turn it on and try again.</p>' : ""}
+<button class="btn" onclick="pcOk()" ${p.busy ? "disabled" : ""}>${p.busy ? '<span class="spin"></span>Locating…' : "Confirm presence"}</button><button class="btn sec" onclick="pcAway()">I’m on a break / away</button>`
+}</div></div>`;
+      }
+      const TAG = {
+        login: "UC-01 Log in",
+        home: "UC-03, UC-04, UC-05 Home, status, check in / out",
+        history: "UC-06 Attendance history",
+        requests: "UC-07 Requests",
+        profile: "UC-02 Profile and workplace",
+        sched: "UC-03 Work schedule",
+        day: "UC-06 Day details, presence checks",
+        new: "UC-07 New request",
+      };
+      function render() {
+        const V = { sched, day: dayv, new: newreq },
+          T = { home, history, requests: reqs, profile };
+        const k = !S.user ? "login" : S.ov || S.tab,
+          c = !S.user ? login() : S.ov ? V[S.ov]() : T[S.tab]();
+        $("#app").innerHTML =
+          `<div class="view" id="view">${c}</div>${S.user ? nav() : ""}${S.sheet ? `<div class="scrim" onclick="closeSheet()"><div class="sheet" onclick="event.stopPropagation()" role="dialog">${S.sheet.body}</div></div>` : ""}${S.pc ? pcH() : ""}`;
+        $("#tag").textContent = S.pc
+          ? "UC-08 Presence check"
+          : S.sheet
+            ? S.sheet.k == "out"
+              ? "UC-05 Check out"
+              : "UC-04 Check in, FR-12, FR-14, FR-15"
+            : TAG[k];
+        document
+          .querySelectorAll("#demo [data-sc]")
+          .forEach((b) => b.classList.toggle("sel", +b.dataset.sc == S.sc));
+      }
+      /* ---------- actions ---------- */
+      function toast(t) {
+        const e = $("#toast");
+        e.textContent = t;
+        e.classList.add("on");
+        clearTimeout(tm.t);
+        tm.t = setTimeout(() => e.classList.remove("on"), 2200);
+      }
+      function tpw() {
+        const e = $("#pw");
+        e.type = e.type == "password" ? "text" : "password";
+      }
+      function doLogin() {
+        if ($("#pw").value == "demo" && $("#em").value.includes("@")) {
+          S.user = 1;
+          locate();
+        } else $("#le").hidden = false;
+      }
+      function logout() {
+        const sc = S.sc;
+        clearAll();
+        init();
+        S.sc = sc;
+        render();
+      }
+      function clearAll() {
+        clearTimeout(tm.a);
+        clearInterval(tm.p);
+        clearTimeout(tm.l);
+      }
+      function locate() {
+        S.loc = "wait";
+        render();
+        clearTimeout(tm.l);
+        tm.l = setTimeout(() => {
+          S.loc = "ok";
+          render();
+        }, 900);
+      }
+      function setSc(n) {
+        S.sc = n;
+        S.user ? locate() : render();
+      }
+      function resetDemo() {
+        clearAll();
+        const sc = S.sc;
+        init();
+        S.sc = sc;
+        render();
+      }
+      function closeSheet() {
+        S.sheet = null;
+        render();
+      }
+      function sheet(k, body) {
+        S.sheet = { k, body };
+        render();
+      }
+      const big = (k, n) => `<div class="big2 ${k}">${ic(n, 36)}</div>`;
+      function act() {
+        if (S.busy) return;
+        S.busy = 1;
+        render();
+        setTimeout(() => {
+          S.busy = 0;
+          result();
+        }, 1200);
+      }
+      function result() {
+        const sc = SC[S.sc],
+          o = !!S.sess,
+          now = hm(),
+          lbl = o ? "Check-out" : "Check-in",
+          v = o ? "Checked out" : "Checked in",
+          done = `<button class="btn" onclick="closeSheet()">Done</button>`;
+        if (sc.off) {
+          S.pending = o ? "check-out" : "check-in";
+          return sheet(
+            "err",
+            big("nn", "pinoff") +
+              `<h2>Location is turned off or unavailable</h2><p>Your ${S.pending} is saved, so nothing is lost. Turn on location, then try again.</p><button class="btn sec" onclick="toast('Settings opened (mock)')">Open settings</button><button class="btn" onclick="closeSheet();act()">Try again</button>`,
+          );
+        }
+        S.pending = null;
+        if (!sc.zone) {
+          S.tl.push({
+            kind: "mark",
+            label: lbl,
+            t: now,
+            k: "er",
+            txt: `outside zone, ${sc.dist} m, rejected`,
+          });
+          return sheet(
+            "err",
+            big("er", "x") +
+              `<h2>${v == "Checked in" ? "Check-in" : "Check-out"} rejected</h2><p>You are ${sc.dist} m from HQ Office (allowed 100 m). Move closer and try again.</p><button class="btn" onclick="closeSheet();act()">Try again</button><button class="btn sec" onclick="S.sheet=null;S.nt='Remote work';S.ov='new';render()">Request remote work</button>`,
+          );
+        }
+        const rev = sc.k == "wn";
+        S.tl.push({
+          kind: "mark",
+          label: lbl,
+          t: now,
+          k: sc.k,
+          txt:
+            `inside zone, accuracy ${sc.acc} m` +
+            (rev ? ", sent for review" : ""),
+        });
+        const note = rev
+          ? big("wn", "alert") +
+            `<h2>Sent for review</h2><p>Your location could not be confirmed precisely. Your administrator will review it. Your time is recorded.</p>`
+          : "";
+        if (!o) {
+          S.sess = { t: now, ms: Date.now() };
+          if (!S.autoDone) {
+            S.autoDone = 1;
+            tm.a = setTimeout(openPresence, 20000);
+          }
+          return sheet(
+            "in",
+            (rev
+              ? note
+              : big("ok", "check") +
+                `<h2>Checked in at ${now}</h2><p>${sc.dist} m from HQ Office · accuracy ±${sc.acc} m</p>`) +
+              done,
+          );
+        }
+        const el = Date.now() - S.sess.ms,
+          late = mins(S.sess.t) - 540,
+          nm = mins(now);
+        S.todayMs += el;
+        S.sess = null;
+        clearTimeout(tm.a);
+        const R = [
+          ["Worked time", fm(Math.floor(el / 60000))],
+          ["Arrival", late > 0 ? `Late ${late} min` : "On time"],
+        ];
+        if (nm < 1080) R.push(["Departure", `Early leaving ${1080 - nm} min`]);
+        else if (nm > 1080) R.push(["Overtime", `${nm - 1080} min`]);
+        sheet(
+          "out",
+          (rev ? note : big("ok", "check") + `<h2>Checked out at ${now}</h2>`) +
+            `<div class="sum">${R.map((r) => `<div><span class="m">${r[0]}</span><b>${r[1]}</b></div>`).join("")}</div>` +
+            done,
+        );
+      }
+      function addCheck(st) {
+        S.tl.push({
+          kind: "check",
+          t: hm(),
+          label: "Presence check",
+          k: STK[st],
+          st,
+        });
+      }
+      function openPresence() {
+        if (!S.user || S.pc) return;
+        S.pc = { left: 120 };
+        clearInterval(tm.p);
+        tm.p = setInterval(() => {
+          if (!S.pc || S.pc.res) return;
+          S.pc.left--;
+          if (S.pc.left <= 0) {
+            clearInterval(tm.p);
+            addCheck("NO RESPONSE");
+            S.pc = null;
+            render();
+            toast("Presence check missed");
+          } else {
+            const e = $("#pcc");
+            if (e)
+              e.textContent =
+                pad(Math.floor(S.pc.left / 60)) + ":" + pad(S.pc.left % 60);
+          }
+        }, 1000);
+        render();
+      }
+      function pcOk() {
+        S.pc.busy = 1;
+        S.pc.err = 0;
+        render();
+        setTimeout(() => {
+          if (!S.pc) return;
+          const s = SC[S.sc];
+          S.pc.busy = 0;
+          if (s.off) {
+            S.pc.err = 1;
+            return render();
+          }
+          const st = !s.zone
+            ? "POSSIBLE ABSENCE"
+            : s.k == "wn"
+              ? "UNCONFIRMED"
+              : "CONFIRMED";
+          addCheck(st);
+          S.pc.res = st;
+          clearInterval(tm.p);
+          render();
+          setTimeout(() => {
+            S.pc = null;
+            render();
+          }, 1500);
+        }, 900);
+      }
+      function pcAway() {
+        clearInterval(tm.p);
+        addCheck("ON BREAK");
+        S.pc = null;
+        render();
+      }
+      function submitReq() {
+        const f = $("#rf").value,
+          t = $("#rto").value;
+        if (!f || !t || t < f) {
+          $("#re").hidden = false;
+          return;
+        }
+        const fd = (s) =>
+          new Date(s).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+          });
+        S.reqs.unshift({
+          ty: $("#rt").value,
+          dr: f == t ? fd(f) : fd(f) + " – " + fd(t),
+          st: "nn",
+          stt: "Pending",
+          cm: $("#rc").value.trim(),
+        });
+        S.ov = null;
+        S.tab = "requests";
+        render();
+        toast("Request submitted");
+      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key == "Enter" && e.target.id == "pw") doLogin();
+      });
+      setInterval(() => {
+        const e = $("#tm");
+        if (e && S.sess) e.textContent = fmt(Date.now() - S.sess.ms);
+      }, 1000);
+      setInterval(() => ($("#clk").textContent = hm()), 15000);
+      $("#clk").textContent = hm();
+      init();
+      render();
+    </script>
+  </body>
+</html>
