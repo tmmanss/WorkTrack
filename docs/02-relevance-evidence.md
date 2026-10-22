@@ -28,6 +28,7 @@ work with attendance tracking, and to separate **verified findings** from **assu
 | I3 | Employer / manager | Office work (type not stated) | Written answers | 23.10.2026 | 10+ |
 | I4 | Employee | Barista (food service) | Written answers | 22.10.2026 | 20+ |
 | I5 | Employee | Software developer, hybrid work | Written answers | 22.10.2026 | 10+ |
+
 Organisation sizes are approximate lower bounds reported by the author from respondents' information.
 I1 (500+) is the size of the whole company; a single site is comparable to the other organisations
 (author's estimate), and review of disputed marks is done at the level of one site.
