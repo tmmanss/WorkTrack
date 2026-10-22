@@ -86,9 +86,9 @@ The values are counted on the prototype by the author. They will be checked on t
 
 ## 5. Status of evidence and limitations
 
-- The prototype is based on the requirements ([06-requirements.md](06-requirements.md)) and is **not yet validated
-  with users**. The interface decisions are assumptions until feedback is collected in the user discussions
-  (task WT-2); the prototype can be shown there.
+- The prototype is based on the requirements ([06-requirements.md](06-requirements.md)) and is **not validated
+  with users**. The interface decisions remain assumptions; usability is planned to be checked on the working
+  application (see EXP-6 in [09-verification-plan.md](09-verification-plan.md)).
 - Test data is fictional. No backend, no real location, no real notifications.
 - Not covered: Remote Work, QR code, biometrics, task module (shown only as "Coming soon" settings), and the
   notification list.

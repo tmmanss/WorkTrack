@@ -141,6 +141,11 @@ evaluation report with the reason.
 - **Target (initial):** FRR of P1 is lower than FRR of B1 for accuracy of 20 m and worse; FRR of P1 at most 2% for
   accuracy up to `A_max`; FAR is reported per band and compared with B1 (points just outside the radius are
   accepted by any method, which is a documented limit). RR is reported so that the review workload stays visible.
+- **Review workload limit (from the interviews, see 02-relevance-evidence.md):** employers accept up to 5
+  (I2) to 10 (I1, I3) disputed marks per day. For a site of about 20 employees with two marks per employee
+  per day (about 40 marks), 5 marks per day correspond to about 12%. The initial target is RR at most 10%
+  of marks; a higher RR is reported as exceeding the workload named by employers. Assumptions: 20 employees
+  per site (respondents' sizes are 10+ to 20+ per site), 2 marks per employee per day.
 - **Output:** tables and plots in `docs/evaluation/exp2-geofence-simulation.md`; script in `tests/experiments/`.
 
 #### EXP-3. Field GPS test on a real device (EQ2, FR-15, NFR-05)
