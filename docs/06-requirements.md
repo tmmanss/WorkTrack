@@ -53,37 +53,37 @@
 | FR-12 | An employee can register check-in (start of work) from the mobile app | Must | Request with valid location creates a work session with start time | Assumption |
 | FR-13 | An employee can register check-out (end of work) | Must | Check-out closes the open work session with end time | Assumption |
 | FR-14 | The server validates the distance between the device location and the workplace (geofence) | Must | Point inside the radius is accepted; point outside is rejected or sent for review; test with at least 5 coordinate cases | Assumption |
-| FR-15 | The server takes GPS accuracy into account and assigns one of the statuses: ACCEPTED, REJECTED, NEEDS_REVIEW | Must | Accuracy above the configured threshold gives NEEDS_REVIEW instead of automatic violation; threshold is configurable | Assumption |
-| FR-16 | The server uses its own time for registration and ignores client-provided time for calculation | Must | A request with an altered device time is stored with server time | Assumption |
-| FR-17 | The system prevents duplicate marks (repeated submission, check-in with an open session, check-out without a session) | Must | Repeated identical request creates no second record; invalid sequence returns a clear error | Assumption |
-| FR-18 | Each mark stores coordinates, accuracy, time, workplace and validation result | Must | Stored record contains all listed fields | Assumption |
-| FR-19 | The app shows clear messages for GPS and network errors and does not lose the user's action | Must | With GPS off or network off the app shows an error and does not crash; retry is possible | Assumption |
-| FR-20 | An administrator can review NEEDS_REVIEW marks and approve or reject them with a comment | Should | Decision changes the mark status and is saved with author and time | Assumption |
+| FR-15 | The server takes GPS accuracy into account and assigns one of the statuses: ACCEPTED, REJECTED, NEEDS_REVIEW | Must | Accuracy above the configured threshold gives NEEDS_REVIEW instead of automatic violation; threshold is configurable | Verified (I1 to I5) |
+| FR-16 | The server uses its own time for registration and ignores client-provided time for calculation | Must | A request with an altered device time is stored with server time | Verified (I1 to I5) |
+| FR-17 | The system prevents duplicate marks (repeated submission, check-in with an open session, check-out without a session) | Must | Repeated identical request creates no second record; invalid sequence returns a clear error | Verified (I1 to I5) |
+| FR-18 | Each mark stores coordinates, accuracy, time, workplace and validation result | Must | Stored record contains all listed fields | Verified (I1 to I5) |
+| FR-19 | The app shows clear messages for GPS and network errors and does not lose the user's action | Must | With GPS off or network off the app shows an error and does not crash; retry is possible | Verified (I1 to I5) |
+| FR-20 | An administrator can review NEEDS_REVIEW marks and approve or reject them with a comment | Must | Decision changes the mark status and is saved with author and time | Verified (I1 to I5) |
 | FR-21 | The system detects unclosed work sessions (no check-out after the end of the shift) | Should | Session without check-out after shift end plus configured time is flagged | Assumption |
 
 ### 3.5 Working time calculation
 
 | ID | Requirement | Priority | Acceptance criterion | Evidence |
 |---|---|---|---|---|
-| FR-22 | The system calculates worked duration for each work session | Must | Result matches manual calculation on at least 5 test sessions | Assumption |
-| FR-23 | The system determines lateness and early leaving against the assigned schedule | Must | Check-in later than shift start plus grace period is marked as late; analogously for early leaving | Assumption |
-| FR-24 | The system calculates overtime | Should | Time beyond the shift end is counted according to the organization rules | Assumption |
-| FR-25 | Calculation rules (grace period, accuracy threshold, overtime) are configurable per organization | Should | Changing a setting changes the result of the next calculation | Assumption |
+| FR-22 | The system calculates worked duration for each work session | Must | Result matches manual calculation on at least 5 test sessions | Verified (I1, I2, I3) |
+| FR-23 | The system determines lateness and early leaving against the assigned schedule | Must | Check-in later than shift start plus grace period is marked as late; analogously for early leaving | Verified (I1, I2, I3) |
+| FR-24 | The system calculates overtime | Should | Time beyond the shift end is counted according to the organization rules | Verified (I1, I2, I3) |
+| FR-25 | Calculation rules (grace period, accuracy threshold, overtime) are configurable per organization | Should | Changing a setting changes the result of the next calculation | Verified (I1, I2, I3) |
 
 ### 3.6 History, statistics and reports
 
 | ID | Requirement | Priority | Acceptance criterion | Evidence |
 |---|---|---|---|---|
-| FR-26 | An employee can view attendance history and worked hours | Must | List shows sessions by date with worked time and statuses | Assumption |
-| FR-27 | An administrator can view current and historical attendance of all employees | Must | Filters by employee, date and status work correctly | Assumption |
-| FR-28 | The system provides statistics per employee and organization for day, week and month | Must | Totals (worked days, hours, lateness, early leaving, absences) match test data | Assumption |
-| FR-29 | An administrator can export a report to CSV | Could | Downloaded file opens and contains the same data as the screen | Assumption |
+| FR-26 | An employee can view attendance history and worked hours | Must | List shows sessions by date with worked time and statuses | Verified (I1, I2, I3) |
+| FR-27 | An administrator can view current and historical attendance of all employees | Must | Filters by employee, date and status work correctly | Verified (I1, I2, I3) |
+| FR-28 | The system provides statistics per employee and organization for day, week and month | Must | Totals (worked days, hours, lateness, early leaving, absences) match test data | Verified (I1, I2, I3) |
+| FR-29 | An administrator can export a report to CSV | Should | Downloaded file opens and contains the same data as the screen | Assumption |
 
 ### 3.7 Requests
 
 | ID | Requirement | Priority | Acceptance criterion | Evidence |
 |---|---|---|---|---|
-| FR-30 | An employee can submit a request (vacation, absence, remote work, schedule change) | Should | Request is created with type, period and comment, status PENDING | Assumption |
+| FR-30 | An employee can submit a request (vacation, absence, remote work, sick leave, schedule change) | Should | Request is created with type, period and comment, status PENDING | Assumption |
 | FR-31 | An administrator can approve or reject a request with a comment | Should | Employee sees the new status and the comment | Assumption |
 | FR-32 | Approved requests are considered in attendance analysis | Should | An approved absence day is not counted as unexcused absence | Assumption |
 
@@ -91,19 +91,19 @@
 
 | ID | Requirement | Priority | Acceptance criterion | Evidence |
 |---|---|---|---|---|
-| FR-33 | After check-in the system periodically requests a location check within the open session | Should | Checks occur at intervals within configured limits | Assumption |
-| FR-34 | Intervals are variable (random within organization limits) | Should | Intervals of one session are not equal and stay in the configured range | Assumption |
-| FR-35 | Check results are stored separately from check-in/check-out marks with statuses CONFIRMED, UNCONFIRMED, POSSIBLE_ABSENCE | Should | Data model separates these records; report shows all three statuses | Assumption |
-| FR-36 | One failed check is not a violation; N consecutive failures (configurable) create a possible-absence record for the administrator | Should | Test: 1 failure gives no record; N failures give a record | Assumption |
-| FR-37 | Reports distinguish the registered interval from confirmed presence periods | Should | Report shows both values for a session | Assumption |
+| FR-33 | After check-in the system periodically requests a location check within the open session | Should | Checks occur at intervals within configured limits | Partly verified (I1 to I3) |
+| FR-34 | Intervals are variable (random within organization limits) | Should | Intervals of one session are not equal and stay in the configured range | Partly verified (I1 to I3) |
+| FR-35 | Check results are stored separately from check-in/check-out marks with statuses CONFIRMED, UNCONFIRMED, POSSIBLE_ABSENCE | Should | Data model separates these records; report shows all three statuses | Partly verified (I1 to I3) |
+| FR-36 | One failed check is not a violation; N consecutive failures (configurable) create a possible-absence record for the administrator | Should | Test: 1 failure gives no record; N failures give a record | Partly verified (I1 to I3) |
+| FR-37 | Reports distinguish the registered interval from confirmed presence periods | Should | Report shows both values for a session | Partly verified (I1 to I3) |
 
 ### 3.9 Optional features
 
 | ID | Requirement | Priority | Acceptance criterion | Evidence |
 |---|---|---|---|---|
-| FR-38 | Remote Work mode: remote session and periodic Work Check confirmations with request time, response time and result | Could | Missed confirmation is stored as "no response", not as proven absence | Assumption |
-| FR-39 | QR code confirmation of presence combined with geolocation | Could | Invalid or expired QR is rejected and the attempt is logged | Assumption |
-| FR-40 | Additional identity confirmation with device biometrics (Android) | Could | Mark with biometrics enabled requires successful confirmation | Assumption |
+| FR-38 | Remote Work mode: remote session and periodic Work Check confirmations with request time, response time and result | Could | Missed confirmation is stored as "no response", not as proven absence | Verified, minor (I1, I2, I3, I5) |
+| FR-39 | QR code confirmation of presence combined with geolocation | Could | Invalid or expired QR is rejected and the attempt is logged | Partly verified |
+| FR-40 | Additional identity confirmation with device biometrics (Android) | Could | Mark with biometrics enabled requires successful confirmation | Partly verified |
 | FR-41 | Detection of mock location where the platform supports it, with a suspicious flag on the mark | Could | Mark made with mock location enabled is flagged for the administrator | Assumption |
 | FR-42 | Notifications (shift start, check-in reminder, request status; for administrator: unclosed sessions, possible absences) | Could | Notification is delivered for each listed event | Assumption |
 | FR-43 | Task module (create, assign, statuses To Do, In Progress, Completed) | Could | Status changes by employee are visible to the administrator | Assumption |

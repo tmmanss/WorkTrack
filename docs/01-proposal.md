@@ -26,7 +26,11 @@ Organizations need reliable records of when employees start and finish work and 
 
 Commercial products (Jibble, Connecteam, TimeCamp, Buddy Punch) cover the basic attendance functions, but they are proprietary cloud services; self-hosting is offered only on a top-tier plan (TimeCamp), and their logic cannot be studied or adapted. See [04-systems-comparison.md](04-systems-comparison.md).
 
-> **Status of evidence:** points 1-3 are currently based on the author's analysis of the domain and existing systems (**assumption**). They will be verified through user discussions in WT-2 and the status will be updated here.
+> **Status of evidence:** five interviews were conducted (3 employers, 2 employees; see
+> [02-relevance-evidence.md](02-relevance-evidence.md)). Point 3 (manual calculation) is **confirmed** by all
+> three employers. Point 2 (leaving between check-in and check-out) is **partly confirmed**: it occurs but is
+> infrequent. Point 1 (location is not verified or is verified naively) was **not tested**, because no
+> respondent uses geolocation-based attendance. Cost was named as a reason for not adopting specialised systems.
 
 ## 4. Target users
 
