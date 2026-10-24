@@ -62,7 +62,7 @@ PostgreSQL, REST API.
 
 ## Links
 
-- YouTrack: [<link to YouTrack project WT>](https://work-truck.youtrack.cloud/agiles/204-1/current)
+- YouTrack: [https://work-truck.youtrack.cloud/agiles/204-1/current](https://work-truck.youtrack.cloud/agiles/204-1/current)
 - Documentation: [docs/](docs/)
 - Prototype: [docs/08-prototype.md](docs/08-prototype.md) (clickable HTML files: `docs/prototype/mobile.html`, `docs/prototype/web.html`)
 
